@@ -1,0 +1,25 @@
+{
+  "name": "require-dir-all",
+  "version": "0.0.1",
+  "description": "Yet another Node.js helper to require all files in directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alykoshin/require-dir-all.git"
+  },
+  "keywords": [
+    "node",
+    "require",
+    "directory"
+  ],
+  "author": "Alexander Lykoshin <alykoshin@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alykoshin/require-dir-all/issues"
+  },
+  "homepage": "https://github.com/alykoshin/require-dir-all#readme",
+  "dependencies": {}
+}
