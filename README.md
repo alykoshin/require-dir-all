@@ -3,10 +3,10 @@ require-dir-all
 
 Yet another Node.js helper to require all files in directory
 
+[Link to package page in npm repository](https://www.npmjs.com/package/require-dir-all)
+
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
 [require-dir](https://github.com/aseemk/requireDir) packages.
-
-[Link to npm package](https://www.npmjs.com/package/require-dir-all)
 
 !! WARNING: the package is in alpha state, it may be unstable and change its API  !!!
 
@@ -31,8 +31,8 @@ You may provide additional options using second optional parameter:
 
 ```js
 var modules = require('require-dir-all')(
-  'directory_to_require',
-  {
+  'directory_to_require', // directory
+  { // options
     map: function( ) { /* you may postprocess the name of property the module will be stored and exported object */ }
     recursive: false, // recursively go through subdirectories; default: false
     excludeDir: /^(\.(git|svn)|(node_modules))$/ // default value - reg exp to exclude subdirectories
@@ -41,7 +41,7 @@ var modules = require('require-dir-all')(
 ```
 
 Options:    
-- ```map```: function to postprocess each require-d file (see below example)
+- ```map```: function to postprocess each require-d file (see example below); default: ```null```
 - ```recursive```  - recursively go through subdirectories; default: ```false```
 - ```excludeDir``` - reg exp to exclude subdirectories, default: ```/^(\.(git|svn)|(node_modules))$/```
 
