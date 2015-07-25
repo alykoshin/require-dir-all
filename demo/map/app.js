@@ -10,10 +10,10 @@ var config = {
 var modules = require('require-dir-all')(
   'modules', // Directory to require
   {          // Options
-    map: function(req) {
-      req.exported = function(module) { return new module( config[req.name] ); };
+    map: function(required) {
+      required.exported = function(module) { return new module( config[required.name] ); };
       // Also may change the property name if needed
-      // req.name = 'prefix_'+req.name;
+      // required.name = 'prefix_'+required.name;
     }
   }
 );
