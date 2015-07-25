@@ -3,10 +3,12 @@ require-dir-all
 
 Yet another Node.js helper to require all files in directory
 
-Inspired by ```require-all``` https://github.com/felixge/node-require-all and 
-```require-dir``` https://github.com/aseemk/requireDir packages
+Inspired by [require-all](https://github.com/felixge/node-require-all) and 
+[require-dir](https://github.com/aseemk/requireDir) packages.
 
-# WARNING: THE PACKAGE IS IN ALPHA STATE
+[Link to npm package](https://www.npmjs.com/package/require-dir-all)
+
+!! WARNING: the package is in alpha state, it may be unstable and change its API  !!!
 
 ## Installation
 
@@ -16,9 +18,14 @@ npm install require-dir-all --save
 
 ## Usage
 
+### Basic usage
+
 ```js
 var modules = require('require-dir-all')('directory_to_require');
 ```
+
+Afterwards variable ```modules``` will contain exports from all the files in directory accessible as its properties, for 
+example ```modules.module1```
     
 You may provide additional options using second optional parameter:
 
@@ -66,19 +73,19 @@ modules/
 app.js
 ```
 
-File module1.js exports:
+File ```module1.js``` exports:
 
 ```
 module.exports = 'module1.exports';
 ```
 
-File module2.js exports:
+File ```module2.js``` exports:
 
 ```
 module.exports = 'module2.exports';
 ```
 
-In app.js:
+In ```app.js```:
 
 ```js
 var modules = require('require-dir-all')('modules');
@@ -101,7 +108,7 @@ To run: ```cd demo/simple/```, then run ```npm install```, then ```node app```
 
 ### Map
 
-Option map allows to define function to run for each require'd file.
+Option ```map``` allows to define function to run for each require'd file.
 
 Assume you have following structure:
 
@@ -111,8 +118,8 @@ modules/
   module2
 ```
 
-If each file in modules directory exports a constructor to which the some config parameters are is passed and the code 
-in app.js is like following:
+If each file in modules directory exports a constructor to which the some config parameters are passed and the code 
+in ```app.js``` is like following:
 
 ```js
 var config1 = { value: 'config1' },
