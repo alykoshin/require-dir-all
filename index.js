@@ -5,34 +5,60 @@
 var fs = require('fs'),
   path = require('path');
 
-module.exports = function requireDirAll(dir, opts) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js
+//
+// make a note of the calling file's path, so that we can resolve relative
+// paths. this only works if a fresh version of this module is run on every
+// require(), so important: we clear the require() cache each time!
+//
+var parentModule = module.parent;
+var parentFile = parentModule.filename;
+var parentDir = path.dirname(parentFile);
+delete require.cache[__filename];
+//
+//////////////// ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  dir = dir || '.';
-  opts = opts || {
-      recurse: false,
-      excludeDirs: /^\.(git|svn)$/
-    };
+module.exports = function requireDirAll(relOrAbsDir, options) {
+
+  relOrAbsDir = relOrAbsDir || '.';
+  options = options || {};
+  options.recursive   = options.recursive || false;
+  options.excludeDirs = options.excludeDirs || /^(\.(git|svn)|(node_modules))$/;
+  options.map         = options.map || null;
 
   var modules = {};
-  var files = fs.readdirSync(dir);
 
-  files.forEach(function (filename) {
+  var absDir = path.resolve(parentDir, relOrAbsDir);
+  var files = fs.readdirSync(absDir);
 
-    var filepath = path.join(dir, filename),
+  for (var length=files.length, i=0; i<length; ++i) {
+
+    var filename = files[i],
+      filepath = path.join(absDir, filename),
       ext = path.extname(filename),
       base = path.basename(filename, ext);
 
+    if (path === parentFile) {
+      continue;
+    }
+
     if (fs.statSync(filepath).isDirectory()) {
-      if (opts.recurse) {
-        if ( !opts.excludeDirs && !filepath.match(opts.excludeDirs)) {
-          modules[base] = requireDirAll(filepath, opts);
+      if (options.recursive) {
+        if ( !options.excludeDirs && !filepath.match(options.excludeDirs)) {
+          modules[base] = requireDirAll(filepath, options);
         }
       }
     } else {
-      modules[base] = require(filepath);
+      var req = {
+        name: base,
+        exported: require(filepath)
+      };
+      if (options.map) { options.map(req); }
+      modules[req.name] = req.exported; // require(filepath);
     }
 
-  });
+  }
 
   return modules;
 

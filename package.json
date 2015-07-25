@@ -11,9 +11,10 @@
     "url": "git+https://github.com/alykoshin/require-dir-all.git"
   },
   "keywords": [
-    "node",
+    "javascript", "node",  "js", "nodejs", "node.js",
     "require",
-    "directory"
+    "directory", "folder", "dir", "index",
+    "recursive"
   ],
   "author": "Alexander Lykoshin <alykoshin@gmail.com>",
   "license": "MIT",
