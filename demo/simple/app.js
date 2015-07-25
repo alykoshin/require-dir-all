@@ -1,7 +1,9 @@
 // See README.md for details.
 
-var dir1 = require('dir1');
+'use strict';
 
-console.log('dir1:', dir1);
-console.log('dir1.file1:', dir1.file1);
-console.log('dir1.file2:', dir1.file2);
+var modules = require('require-dir-all')('modules');
+
+console.log('modules:', modules);
+console.log('modules.module1:', modules.module1);
+console.log('modules.module2:', modules.module2);

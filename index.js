@@ -43,6 +43,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
       ext = path.extname(filename),
       base = path.basename(filename, ext);
 
+    // Exclude require-ing file
     if (path === parentFile) {
       continue;
     }
@@ -56,10 +57,10 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
     } else {
       var req = {
         name: base,
-        exported: require(filepath)
+        exported: null // function(value) { return value; } //
       };
       if (options.map) { options.map(req); }
-      modules[req.name] = req.exported;
+      modules[req.name] = req.exported ? req.exported(require(filepath)) : require(filepath);
     }
 
   }
