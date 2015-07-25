@@ -1,5 +1,9 @@
 // See README.md for details.
 
+// Inspired by require-all and require-dir packages:
+// https://github.com/felixge/node-require-all
+// https://github.com/aseemk/requireDir
+
 'use strict';
 
 var fs = require('fs'),
@@ -55,7 +59,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
         exported: require(filepath)
       };
       if (options.map) { options.map(req); }
-      modules[req.name] = req.exported; // require(filepath);
+      modules[req.name] = req.exported;
     }
 
   }

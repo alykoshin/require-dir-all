@@ -2,6 +2,6 @@
   "description": "Demo for npm package require-dir-all",
   "license": "MIT",
   "dependencies": {
-    "require-dir-all": "0.0.1"
+    "require-dir-all": "latest"
   }
 }
