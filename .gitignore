@@ -1,6 +1,8 @@
-#
+# Node specific
 npm-debug.log
-node_modules/
+node_modules
 
-#
-.idea/
+# JetBrains specific
+.idea
+
+
