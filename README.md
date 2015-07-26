@@ -1,9 +1,9 @@
+[![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
+
 require-dir-all
 =================
 
 Yet another Node.js helper to ```require``` all files in directory
-
-[Link to package page in npm repository](https://www.npmjs.com/package/require-dir-all)
 
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
 [require-dir](https://github.com/aseemk/requireDir) packages. 
@@ -11,6 +11,12 @@ Both of them are good, but first of them lacks relative paths support (need to u
 while second lacks file/dir filtering and recursion control. 
 
 !!! WARNING: the package is in **ALPHA state**, it may be unstable and it may slightly change its API  !!!
+
+Links to package pages:
+
+[npmjs.com](https://www.npmjs.com/package/require-dir-all)
+
+[travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
 
 ## Installation
 

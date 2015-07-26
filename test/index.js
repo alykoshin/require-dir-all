@@ -53,7 +53,7 @@ describe('#recursive demo test', function() {
     module4 = require(root+'dir1/dir2/module4');
     module5 = require(root+'dir.a.b.c/module5');
 
-    console.log('modules:', JSON.stringify(modules, null, 2));
+    //console.log('modules:', JSON.stringify(modules, null, 2));
   });
 
   it(' should have all properties corresponding to each module and directory inside top-level require-d directory', function() {
