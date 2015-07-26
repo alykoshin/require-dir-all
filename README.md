@@ -1,10 +1,11 @@
-[![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
 [![npm version](https://badge.fury.io/js/require-dir-all.svg)](http://badge.fury.io/js/require-dir-all)
+[![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
 
 require-dir-all
 =================
 
-Yet another Node.js helper to ```require``` all files in directory
+Yet another Node.js helper to ```require``` all files in directory.
+Useful when needed to ```require``` group of similar files, like routes, controllers, middlewares, models, etc. 
 
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
 [require-dir](https://github.com/aseemk/requireDir) packages. 
@@ -14,10 +15,9 @@ while second lacks file/dir filtering and recursion control.
 !!! WARNING: the package is in **ALPHA state**, it may be unstable and it may slightly change its API  !!!
 
 Links to package pages:
-
 [npmjs.com](https://www.npmjs.com/package/require-dir-all)
-
 [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
+[github.com](https://github.com/alykoshin/require-dir-all)
 
 ## Installation
 
@@ -34,7 +34,14 @@ var modules = require('require-dir-all')('directory_to_require');
 ```
 
 Afterwards variable ```modules``` will contain exported values from all the files in directory 
-accessible as its properties, for example ```modules.module1```
+accessible as its properties, for example ```modules.module1``` as if they were require'd like:
+```js
+modules = {
+  module1: require('module1')
+  module2: require('module2')
+}
+```
+
     
 You may provide additional options using second optional parameter:
 
@@ -127,8 +134,14 @@ modules: {
 }
 ```
 
-Example located in ```demo/simple/```
-To run: ```cd demo/simple/```, then run ```npm install```, then ```node app```
+You can find this example in ```demo/simple/```
+To run it: 
+
+```js
+cd demo/simple/
+npm install
+node app
+```
 
 ### Recursive
 
@@ -136,7 +149,7 @@ Option ```recursive: true``` allows to require recursively the directory and all
 
 #### Example
 
-You can find an example in ```demo/recursive/```
+You can find this example in ```demo/recursive/```
 
 Directory structure:
 ```sh
@@ -215,7 +228,8 @@ modules/
   module2
 ```
 
-If each file ```module1.js```, ```module2.js``` in ```modules``` directory exports a constructor to which the some config parameters are passed like this:
+If each file ```module1.js```, ```module2.js``` in ```modules``` directory exports a constructor
+ to which the some config parameters are passed like this:
 ```js
 'use strict';
 
@@ -287,5 +301,18 @@ modules: {
 }
 ```
 
-Example located in ```demo/map/```
-To run: ```cd demo/map/```, then run ```npm install```, then ```node app```
+You can find this example in ```demo/map/```
+To run it: 
+```sh
+cd demo/map/
+npm install
+node app
+```
+
+## TODO:
+Add ```modules.each``` property to make easier calling of same method for each module.
+```js
+modules.each(function(module) {
+  module.init();
+});
+```
