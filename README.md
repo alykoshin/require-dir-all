@@ -13,7 +13,7 @@ Useful when needed to ```require``` group of similar files, like routes, control
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
 [require-dir](https://github.com/aseemk/requireDir) packages. 
 Both of them are good, but first of them lacks relative paths support (need to use ```__dirname```), 
-while second lacks file/dir filtering and recursion control. 
+while second lacks file/dir filtering and control over recursion. 
 
 !!! WARNING: the package is in **ALPHA state**, it may be unstable and it may slightly change its API  !!!
 
@@ -33,13 +33,13 @@ var modules = require('require-dir-all')('directory_to_require');
 
 Afterwards variable ```modules``` will contain exported values from all the files in directory 
 accessible as its properties, for example ```modules.module1``` as if they were require'd like:
+
 ```js
 modules = {
   module1: require('module1')
   module2: require('module2')
 }
 ```
-
     
 You may provide additional options using second optional parameter:
 

@@ -45,7 +45,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
     reqModule.filepath = path.join(absDir, reqModule.filename);
 
     // Exclude require'ing file
-    if (path === parentFile) {
+    if (reqModule.filepath === parentFile) {
       continue;
     }
 

@@ -34,6 +34,36 @@ describe('#simple demo test', function() {
 
 });
 
+describe('#same_dir test', function() {
+
+  var root, modules, module1, module2;
+
+  before('before', function() {
+    root = '../demo/same_dir/';
+
+    modules = require(root+'app');
+    module1 = require(root+'module1');
+    module2 = require(root+'module2');
+  });
+
+  it('should have all properties corresponding to each module inside require-d directory', function() {
+    modules.should.have.all.keys('module1', 'module2');
+  });
+
+  it('should have same value for module1 as regular require()', function() {
+    modules.should.have.property('module1', module1);
+  });
+
+  it('should have same value for module2 as regular require()', function() {
+    modules.should.have.property('module2', module2);
+  });
+
+  it('should not have property for require\'ing module', function() {
+    modules.should.not.have.any.keys('app');
+  });
+
+});
+
 describe('#recursive demo test', function() {
 
   var root, modules, module1, module2, module3, module4, module5;
