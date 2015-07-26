@@ -4,12 +4,12 @@
 
 var
   should = require('chai').should(),
-  mockery = require('mockery'),
   //should = require('should'),
   require_dir_all = require('../index');
 
-var MODULE_NAME = 'require-dir-all',
-  MODULE_PATHNAME = '../../../' + MODULE_NAME;
+// Override NODE_ENV, must be set for demo/same_dir/app.js
+process.env.NODE_ENV = 'test';
+
 
 describe('#simple demo test', function() {
 
@@ -45,25 +45,14 @@ describe('#same_dir test', function() {
   before('before', function() {
     root = '../demo/same_dir/';
 
-    // We need to replace register-dir-all module as for tests it is not installed
-    mockery.registerMock('require-dir-all', require('../index'));
-    mockery.registerAllowables([
-      MODULE_PATHNAME
-    ]);
-    mockery.enable({
-      // warnOnReplace: false,
-      // warnOnUnregistered: false,
-      useCleanCache: true
-    });
-
+    // NODE_ENV must be set to test before run following line (checked inside it)
     modules = require(root+'app');
+
     module1 = require(root+'module1');
     module2 = require(root+'module2');
   });
 
   after(function disableMockery() {
-    mockery.deregisterAll();
-    mockery.disable();
   });
 
   it('should have all properties corresponding to each module inside require-d directory', function() {

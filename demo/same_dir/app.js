@@ -2,13 +2,20 @@
 
 'use strict';
 
-var modules = require('require-dir-all')();
+var modules;
 
-// console.log('modules:', JSON.stringify(modules, null, 2));
+if (process.env.NODE_ENV !== 'test') {
 
-// For tests:
-module.exports = modules;
+  modules = require('require-dir-all')();
 
+  console.log('modules:', JSON.stringify(modules, null, 2));
+
+} else { // For tests:
+
+  modules = require('../../index')();
+  module.exports = modules;
+
+}
 /*
 Output:
 

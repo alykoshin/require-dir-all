@@ -31,6 +31,8 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
   options.excludeDirs  = options.excludeDirs  || /^(\.git|\.svn|node_modules)$/;
   options.map          = options.map          || null;
 
+  console.log('relOrAbsDir:', relOrAbsDir, '; options:', options);
+
   var modules = {};
 
   var absDir = path.resolve(parentDir, relOrAbsDir);
@@ -43,6 +45,8 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
     reqModule.ext      = path.extname(reqModule.filename);
     reqModule.base     = path.basename(reqModule.filename, reqModule.ext);
     reqModule.filepath = path.join(absDir, reqModule.filename);
+
+    console.log('reqModule:', reqModule);
 
     // Exclude require'ing file
     if (reqModule.filepath === parentFile) {
