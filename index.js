@@ -27,7 +27,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
   relOrAbsDir = relOrAbsDir || '.';
   options = options || {};
   options.recursive    = options.recursive    || false;
-  options.includeFiles = options.includeFiles || /^.*\.(js|json|coffee)/;
+  options.includeFiles = options.includeFiles || /^.*\.(js|json|coffee)$/;
   options.excludeDirs  = options.excludeDirs  || /^(\.git|\.svn|node_modules)$/;
   options.map          = options.map          || null;
 

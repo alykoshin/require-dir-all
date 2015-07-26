@@ -6,9 +6,11 @@ Yet another Node.js helper to ```require``` all files in directory
 [Link to package page in npm repository](https://www.npmjs.com/package/require-dir-all)
 
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
-[require-dir](https://github.com/aseemk/requireDir) packages.
+[require-dir](https://github.com/aseemk/requireDir) packages. 
+Both of them are good, but first of them lacks relative paths support (need to use __dirname), 
+while second lacks file/dir filtering and recursion control. 
 
-!!! WARNING: the package is in alpha state, it may be unstable and it may change its API  !!!
+!!! WARNING: the package is in **ALPHA state**, it may be unstable and it may slightly change its API  !!!
 
 ## Installation
 
@@ -31,11 +33,12 @@ You may provide additional options using second optional parameter:
 
 ```js
 var modules = require('require-dir-all')(
-  'directory_to_require', // directory
+  'directory_to_require', // relative or absolute directory 
   { // options
     map: function( ) { /* you may postprocess the name of property the module will be stored and exported object */ }
-    recursive: false, // recursively go through subdirectories; default: false
-    excludeDir: /^(\.(git|svn)|(node_modules))$/ // default value - reg exp to exclude subdirectories
+    recursive:    false,                          // recursively go through subdirectories; default value shown
+    includeFiles: /^.*\.(js|json|coffee)$/,       // RegExp to select files; default value shown
+    excludeDir:   /^(\.git|\.svn|node_modules)$/  // RegExp to ignore subdirectories; default value shown
   }
 );
 ```
@@ -43,7 +46,12 @@ var modules = require('require-dir-all')(
 Options:    
 - ```map```: function to postprocess each ```require```'d file (see example below); default: ```null```
 - ```recursive```  - recursively go through subdirectories; default: ```false```
-- ```excludeDir``` - reg exp to exclude subdirectories, default: ```/^(\.(git|svn)|(node_modules))$/```
+- ```includeFiles``` - reg exp to include files,
+  default: ```/^.*\.(js|json|coffee)$/```, 
+  which means to ```require``` only ```.js```, ```.json```, ```.coffee``` files
+- ```excludeDirs``` - reg exp to exclude subdirectories (when ```recursive: true``` ), 
+  default: ```/^(\.(git|svn)|(node_modules))$/```, 
+  which means to exclude directories ```.git```, ```.svn```, ```node_modules``` while going recursively 
 
 ### Simple 
 If you need to require all the ```.js```, ```.json```, ```.coffee``` files in the directory ```modules```, add following line:
