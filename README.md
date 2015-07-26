@@ -8,7 +8,7 @@ Yet another Node.js helper to require all files in directory
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
 [require-dir](https://github.com/aseemk/requireDir) packages.
 
-!! WARNING: the package is in alpha state, it may be unstable and change its API  !!!
+!!! WARNING: the package is in alpha state, it may be unstable and it may change its API  !!!
 
 ## Installation
 

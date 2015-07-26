@@ -50,7 +50,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
 
     if (fs.statSync(filepath).isDirectory()) {
       if (options.recursive) {
-        if ( !options.excludeDirs && !filepath.match(options.excludeDirs)) {
+        if ( !options.excludeDirs || !filepath.match(options.excludeDirs)) {
           modules[base] = requireDirAll(filepath, options);
         }
       }
