@@ -4,7 +4,7 @@
 
 var modules = require('require-dir-all')();
 
-console.log('modules:', JSON.stringify(modules, null, 2));
+// console.log('modules:', JSON.stringify(modules, null, 2));
 
 // For tests:
 module.exports = modules;
