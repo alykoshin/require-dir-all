@@ -318,3 +318,4 @@ modules.each(function(module) {
 [github.com](https://github.com/alykoshin/require-dir-all)
 [npmjs.com](https://www.npmjs.com/package/require-dir-all)
 [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
+[coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all)
