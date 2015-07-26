@@ -1,6 +1,6 @@
 {
   "name": "require-dir-all",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "index.js",
   "scripts": {
