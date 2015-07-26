@@ -1,6 +1,8 @@
 [![npm version](https://badge.fury.io/js/require-dir-all.svg)](http://badge.fury.io/js/require-dir-all)
 [![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
 
+[![Dependency Status](https://david-dm.org/alykoshin/require-dir-all.svg)](https://david-dm.org/alykoshin/require-dir-all)
+[![devDependency Status](https://david-dm.org/alykoshin/require-dir-all/dev-status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=devDependencies)
 require-dir-all
 =================
 
