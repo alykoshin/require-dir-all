@@ -7,7 +7,7 @@ Yet another Node.js helper to ```require``` all files in directory
 
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
 [require-dir](https://github.com/aseemk/requireDir) packages. 
-Both of them are good, but first of them lacks relative paths support (need to use __dirname), 
+Both of them are good, but first of them lacks relative paths support (need to use ```__dirname```), 
 while second lacks file/dir filtering and recursion control. 
 
 !!! WARNING: the package is in **ALPHA state**, it may be unstable and it may slightly change its API  !!!
@@ -26,8 +26,8 @@ npm install require-dir-all --save
 var modules = require('require-dir-all')('directory_to_require');
 ```
 
-Afterwards variable ```modules``` will contain exported values from all the files in directory accessible as its properties, for 
-example ```modules.module1```
+Afterwards variable ```modules``` will contain exported values from all the files in directory 
+accessible as its properties, for example ```modules.module1```
     
 You may provide additional options using second optional parameter:
 
