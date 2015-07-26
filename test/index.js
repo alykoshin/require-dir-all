@@ -43,10 +43,9 @@ describe('#same_dir test', function() {
   var root, modules, module1, module2;
 
   before('before', function() {
-    root = '../demo/same_dir/';
+    root = './same_dir/';
 
-    // NODE_ENV must be set to test before run following line (checked inside it)
-    modules = require(root+'app');
+    modules = require(root);
 
     module1 = require(root+'module1');
     module2 = require(root+'module2');
