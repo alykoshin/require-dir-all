@@ -7,10 +7,6 @@ var
   //should = require('should'),
   require_dir_all = require('../index');
 
-// Override NODE_ENV, must be set for demo/same_dir/app.js
-process.env.NODE_ENV = 'test';
-
-
 describe('#simple demo test', function() {
 
   var root, modules, module1, module2;
