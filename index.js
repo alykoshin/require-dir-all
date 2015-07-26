@@ -28,7 +28,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
   relOrAbsDir = relOrAbsDir || '.';
   options = options || {};
   options.recursive   = options.recursive || false;
-  options.excludeDirs = options.excludeDirs || /^(\.(git|svn)|(node_modules))$/;
+  options.excludeDirs = options.excludeDirs || /^(\.git|\.svn|node_modules)$/;
   options.map         = options.map || null;
 
   var modules = {};
@@ -38,29 +38,31 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
 
   for (var length=files.length, i=0; i<length; ++i) {
 
-    var filename = files[i],
-      filepath = path.join(absDir, filename),
-      ext = path.extname(filename),
-      base = path.basename(filename, ext);
+    var reqModule = {};
+    reqModule.filename = files[i];
+    reqModule.filepath = path.join(absDir, reqModule.filename);
+    reqModule.ext      = path.extname(reqModule.filename);
+    reqModule.base     = path.basename(reqModule.filename, reqModule.ext);
 
-    // Exclude require-ing file
+    // Exclude require'ing file
     if (path === parentFile) {
       continue;
     }
 
-    if (fs.statSync(filepath).isDirectory()) {
+    if (fs.statSync(reqModule.filepath).isDirectory()) {
       if (options.recursive) {
-        if ( !options.excludeDirs || !filepath.match(options.excludeDirs)) {
-          modules[base] = requireDirAll(filepath, options);
+        if ( !options.excludeDirs || !reqModule.filename.match(options.excludeDirs) ) {
+          // use filename instead of base to keep full directory name for directories with '.', like 'dir.1.2.3'
+          reqModule.name = reqModule.filename;
+          modules[reqModule.name] = requireDirAll(reqModule.filepath, options);
         }
       }
     } else {
-      var req = {
-        name: base,
-        exported: null // function(value) { return value; } //
-      };
-      if (options.map) { options.map(req); }
-      modules[req.name] = req.exported ? req.exported(require(filepath)) : require(filepath);
+      reqModule.name = reqModule.base;
+      reqModule.exports = require(reqModule.filepath);
+      if (options.map) { options.map(reqModule); }
+      //modules[req.name] = req.exported ? req.exported(require(filepath)) : require(filepath);
+      modules[reqModule.name] = reqModule.exports;
     }
 
   }

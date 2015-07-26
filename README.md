@@ -1,7 +1,7 @@
 require-dir-all
 =================
 
-Yet another Node.js helper to require all files in directory
+Yet another Node.js helper to ```require``` all files in directory
 
 [Link to package page in npm repository](https://www.npmjs.com/package/require-dir-all)
 
@@ -24,7 +24,7 @@ npm install require-dir-all --save
 var modules = require('require-dir-all')('directory_to_require');
 ```
 
-Afterwards variable ```modules``` will contain exports from all the files in directory accessible as its properties, for 
+Afterwards variable ```modules``` will contain exported values from all the files in directory accessible as its properties, for 
 example ```modules.module1```
     
 You may provide additional options using second optional parameter:
@@ -41,7 +41,7 @@ var modules = require('require-dir-all')(
 ```
 
 Options:    
-- ```map```: function to postprocess each require-d file (see example below); default: ```null```
+- ```map```: function to postprocess each ```require```'d file (see example below); default: ```null```
 - ```recursive```  - recursively go through subdirectories; default: ```false```
 - ```excludeDir``` - reg exp to exclude subdirectories, default: ```/^(\.(git|svn)|(node_modules))$/```
 
@@ -61,6 +61,15 @@ var modules = require_dir_all('modules');
 
 Object ```modules``` will be populated with properties which names will correspond to module names and values - to exported 
 objects. 
+
+```js
+modules = {
+  module1: require('module1')
+  module2: require('module2')
+}
+```
+                      
+By default directories ```.git```, ```.svn```, ```node_modules``` are excluded
 
 #### Example 
  
@@ -91,16 +100,15 @@ In ```app.js```:
 var modules = require('require-dir-all')('modules');
 
 console.log('modules:', modules);
-console.log('modules.module1:', modules.module1);
-console.log('modules.module2:', modules.module2);
 ```
     
 Result:
 
-```
-modules: { module1: 'module1.exports', module2: 'module2.exports' }
-modules.module1: module1.exports
-modules.module2: module2.exports
+```js
+modules: { 
+  module1: 'module1.exports', 
+  module2: 'module2.exports' 
+}
 ```
 
 Example located in ```demo/simple/```
@@ -108,7 +116,17 @@ To run: ```cd demo/simple/```, then run ```npm install```, then ```node app```
 
 ### Map
 
-Option ```map``` allows to define function to run for each require'd file.
+Option ```map``` allows to define function to run for each ```require```'d file.
+
+Object properties.
+These properties may be changed:
+- ```name``` - module name to be stored in result object 
+- ```exports``` - module's exports value 
+These properties are read-only:
+- ```path``` - filepath,
+- ```base``` - base part of file name,
+- ```ext``` - file extension
+
 
 Assume you have following structure:
 
@@ -118,43 +136,76 @@ modules/
   module2
 ```
 
-If each file in modules directory exports a constructor to which the some config parameters are passed and the code 
-in ```app.js``` is like following:
+If each file ```module1.js```, ```module2.js``` in ```modules``` directory exports a constructor to which the some config parameters are passed like this:
+```js
+'use strict';
+
+// Object constructor
+var Object1 = function(config) {
+  this.name = 'Object1';
+  this.config = config;
+};
+
+// Exporting constructor function
+module.exports = Object1;
+```
+
+and the code which ```require```'s these files in ```app_old.js``` is like following:
 
 ```js
+// For 
 var config1 = { value: 'config1' },
   config2 = 'config2';
   
-var module1 = new require('modules/module1')(config1),
-  module2 = new require('module/module2')(config2);
+var module1 = new (require('modules/module1'))(config1),
+  module2 = new ()require('module/module2'))(config2);
 ```
 
 You may replace this with following code:
 
 ```js
+// Store config for each module in config object properties
+// with property names corresponding to module names
 var config = {
   module1: { value: 'config1' },
-  module2: 'config2'
+  module2: { value: 'config2' }
 };
 
+// Require all files in modules subdirectory
 var modules = require('require-dir-all')(
   'modules', // Directory to require
   {          // Options
-    map: function(req) {
-      req.exported = function(module) { return new module( config[req.name] ); };
+    map: function(reqModule) {
+      // define function to be post-processed over exported object for each require-d module
+      reqModule.exports =
+        // create new object with corresponding config passed to constructor
+         new reqModule.exports( config[reqModule.name] );
       // Also may change the property name if needed
-      // req.name = 'prefix_'+req.name;
+      // reqModule.name = 'prefix_'+reqModule.name;
     }
   }
 );
+
+console.log('modules:', JSON.stringify(modules, null, 2));
 ```
     
 Result:
 
-```
-modules: { module1: { name: 'Object1', config: { value: 'config1' } }, module2: { name: 'Object2', config: 'config2' } }
-module: module1 ; imported: { name: 'Object1', config: { value: 'config1' } }
-module: module2 ; imported: { name: 'Object2', config: 'config2' }
+```js
+modules: {
+  "module1": {
+    "name": "Object1",
+    "config": {
+      "value": "config1"
+    }
+  },
+  "module2": {
+    "name": "Object2",
+    "config": {
+      "value": "config2"
+    }
+  }
+}
 ```
 
 Example located in ```demo/map/```

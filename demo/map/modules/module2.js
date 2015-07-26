@@ -1,5 +1,6 @@
 'use strict';
 
+// Object constructor
 var Object2 = function(config) {
   this.name = 'Object2';
   this.config = config;
