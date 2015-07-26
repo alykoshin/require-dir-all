@@ -45,7 +45,7 @@ Options:
 - ```recursive```  - recursively go through subdirectories; default: ```false```
 - ```excludeDir``` - reg exp to exclude subdirectories, default: ```/^(\.(git|svn)|(node_modules))$/```
 
-### Simple
+### Simple 
 If you need to require all the ```.js```, ```.json```, ```.coffee``` files in the directory ```modules```, add following line:
 
 ```js
@@ -61,6 +61,7 @@ var modules = require_dir_all('modules');
 
 Object ```modules``` will be populated with properties which names will correspond to module names and values - to exported 
 objects. 
+Traditional equivalent:
 
 ```js
 modules = {
@@ -69,7 +70,7 @@ modules = {
 }
 ```
                       
-By default directories ```.git```, ```.svn```, ```node_modules``` are excluded
+By default directories ```.git```, ```.svn```, ```node_modules``` are excluded.
 
 #### Example 
  
@@ -85,13 +86,13 @@ app.js
 File ```module1.js``` exports:
 
 ```
-module.exports = 'module1.exports';
+module.exports = 'string exported from module 1';
 ```
 
 File ```module2.js``` exports:
 
 ```
-module.exports = 'module2.exports';
+module.exports = 'string exported from module 2';
 ```
 
 In ```app.js```:
@@ -106,13 +107,76 @@ Result:
 
 ```js
 modules: { 
-  module1: 'module1.exports', 
-  module2: 'module2.exports' 
+  module1: 'string exported from module 1', 
+  module2: 'string exported from module 2' 
 }
 ```
 
 Example located in ```demo/simple/```
 To run: ```cd demo/simple/```, then run ```npm install```, then ```node app```
+
+### Recursive
+
+Option ```recursive: true``` allows to require recursively the directory and all its subdirectories.
+
+#### Example
+
+You can find an example in ```demo/recursive/```
+
+Directory structure:
+```sh
+$ ls -R demo/recursive/modules/
+demo/recursive/modules/:
+dir1  dir.a.b.c  excluded  excluded.2  module1.js  module2.js
+
+demo/recursive/modules/dir1:
+dir2  module3.js
+
+demo/recursive/modules/dir1/dir2:
+module4.js
+
+demo/recursive/modules/dir.a.b.c:
+module5.js
+
+demo/recursive/modules/excluded:
+excluded.js
+
+demo/recursive/modules/excluded.2:
+excluded.js
+```
+
+File app.js:
+
+```js
+'use strict';
+
+var modules = require('require-dir-all')(
+  'modules', {
+    recursive: true,
+    excludeDirs: /^excluded.*$/
+  }
+);
+
+console.log('modules:', JSON.stringify(modules, null, 2));
+```
+
+Output:
+
+```
+modules: {
+  "dir.a.b.c": {
+    "module5": "string exported from module 5"
+  },
+  "dir1": {
+    "dir2": {
+      "module4": "string exported from module 4"
+    },
+    "module3": "string exported from module 3"
+  },
+  "module1": "string exported from module 1",
+  "module2": "string exported from module 2"
+}
+```
 
 ### Map
 

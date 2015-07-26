@@ -9,16 +9,15 @@
 var fs = require('fs'),
   path = require('path');
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var parentModule = module.parent;
+var parentFile = parentModule.filename;
+var parentDir = path.dirname(parentFile);
+
 // Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js
 //
 // make a note of the calling file's path, so that we can resolve relative
 // paths. this only works if a fresh version of this module is run on every
 // require(), so important: we clear the require() cache each time!
-//
-var parentModule = module.parent;
-var parentFile = parentModule.filename;
-var parentDir = path.dirname(parentFile);
 delete require.cache[__filename];
 //
 //////////////// ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,9 +26,10 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
 
   relOrAbsDir = relOrAbsDir || '.';
   options = options || {};
-  options.recursive   = options.recursive || false;
-  options.excludeDirs = options.excludeDirs || /^(\.git|\.svn|node_modules)$/;
-  options.map         = options.map || null;
+  options.recursive    = options.recursive    || false;
+  options.includeFiles = options.includeFiles || /^.*\.(js|json|coffee)/;
+  options.excludeDirs  = options.excludeDirs  || /^(\.git|\.svn|node_modules)$/;
+  options.map          = options.map          || null;
 
   var modules = {};
 
@@ -40,16 +40,18 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
 
     var reqModule = {};
     reqModule.filename = files[i];
-    reqModule.filepath = path.join(absDir, reqModule.filename);
     reqModule.ext      = path.extname(reqModule.filename);
     reqModule.base     = path.basename(reqModule.filename, reqModule.ext);
+    reqModule.filepath = path.join(absDir, reqModule.filename);
 
     // Exclude require'ing file
     if (path === parentFile) {
       continue;
     }
 
+    // Is it directory?
     if (fs.statSync(reqModule.filepath).isDirectory()) {
+      // Go recursively into subdirectory excluding matching patter excludeDirs
       if (options.recursive) {
         if ( !options.excludeDirs || !reqModule.filename.match(options.excludeDirs) ) {
           // use filename instead of base to keep full directory name for directories with '.', like 'dir.1.2.3'
@@ -58,10 +60,16 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
         }
       }
     } else {
+
+      // Exclude files non-matched to patter includeFiles
+      if (options.includeFiles && !reqModule.filename.match(options.includeFiles)) {
+        continue;
+      }
+
       reqModule.name = reqModule.base;
       reqModule.exports = require(reqModule.filepath);
       if (options.map) { options.map(reqModule); }
-      //modules[req.name] = req.exported ? req.exported(require(filepath)) : require(filepath);
+
       modules[reqModule.name] = reqModule.exports;
     }
 

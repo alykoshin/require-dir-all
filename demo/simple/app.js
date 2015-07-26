@@ -13,5 +13,4 @@ modules: {
   "module1": "module1.exports",
   "module2": "module2.exports"
 }
-
 */

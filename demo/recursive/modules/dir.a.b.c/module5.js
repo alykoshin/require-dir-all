@@ -1,1 +1,1 @@
-module.exports = 'string exported from module 4';
+module.exports = 'string exported from module 5';
