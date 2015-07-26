@@ -46,7 +46,7 @@ describe('#same_dir test', function() {
     root = '../demo/same_dir/';
 
     // We need to replace register-dir-all module as for tests it is not installed
-    mockery.registerMock('register-dir-all', require('../index'));
+    mockery.registerMock('require-dir-all', require('../index'));
     mockery.registerAllowables([
       MODULE_PATHNAME
     ]);
