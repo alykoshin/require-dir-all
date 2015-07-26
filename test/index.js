@@ -1,6 +1,6 @@
 'use strict';
 
-/* globals describe, before, it */
+/* globals describe, before, after, it */
 
 var
   should = require('chai').should(),
@@ -45,10 +45,6 @@ describe('#same_dir test', function() {
   before('before', function() {
     root = '../demo/same_dir/';
 
-    modules = require(root+'app');
-    module1 = require(root+'module1');
-    module2 = require(root+'module2');
-
     // We need to replace register-dir-all module as for tests it is not installed
     mockery.registerMock('register-dir-all', require('../index'));
     mockery.registerAllowables([
@@ -59,6 +55,10 @@ describe('#same_dir test', function() {
       // warnOnUnregistered: false,
       useCleanCache: true
     });
+
+    modules = require(root+'app');
+    module1 = require(root+'module1');
+    module2 = require(root+'module2');
   });
 
   after(function disableMockery() {
