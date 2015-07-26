@@ -16,11 +16,6 @@ while second lacks file/dir filtering and recursion control.
 
 !!! WARNING: the package is in **ALPHA state**, it may be unstable and it may slightly change its API  !!!
 
-Links to package pages:
-[npmjs.com](https://www.npmjs.com/package/require-dir-all)
-[travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
-[github.com](https://github.com/alykoshin/require-dir-all)
-
 ## Installation
 
 ```sh
@@ -318,3 +313,8 @@ modules.each(function(module) {
   module.init();
 });
 ```
+
+## Links to package pages:
+[github.com](https://github.com/alykoshin/require-dir-all)
+[npmjs.com](https://www.npmjs.com/package/require-dir-all)
+[travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
