@@ -70,10 +70,7 @@ Options:
 
 ## Tips
 
-Typical task is to run the function for each required module.
-You may achieve this by following code:
-
-Simple way:
+Typical task is to run the function for each module required from the directory (like init or shutdown routines).
 
 If you need to wait until the end of initialization of all the modules, using ```async``` 
 (assuming each module's initialize method accepts callback as a parameter).
@@ -90,16 +87,18 @@ module.exports = {
 
 Require'ing file ```index.js```:
 ```js
+var _ = require('lodash');
 var async = require('async');
+
 var modules = require('require-dir-all')('modules');
 
 module.exports.initialize = function(cb) {
   var initializers = [];
-  //_.forOwn(modules, function(module) {
-  for (var module in modules) { if (modules.hasOwnProperty(module)) {
+  _.forOwn(modules, function(module) {
+//  for (var module in modules) { if (modules.hasOwnProperty(module)) {
       initializers.push( function(cb) { return module.initialize(cb); } );
-  } }
-  // });
+//  } }
+  });
   async.parallel(initializers, cb);
 };
 ```
