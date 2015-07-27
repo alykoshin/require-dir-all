@@ -8,14 +8,14 @@ require-dir-all
 =================
 
 Yet another Node.js helper to ```require``` all files in directory.
-Useful when needed to ```require``` group of similar files, like routes, controllers, middlewares, models, etc. 
+Useful when needed to ```require``` group of files in same directory(-ies) with similar functionality, 
+like routes, controllers, middlewares, models, etc. 
 
 Inspired by [require-all](https://github.com/felixge/node-require-all) and 
 [require-dir](https://github.com/aseemk/requireDir) packages. 
-Both of them are good, but first of them lacks relative paths support (need to use ```__dirname```), 
-while second lacks file/dir filtering and control over recursion. 
-
-!!! WARNING: the package is in **ALPHA state**, it may be unstable and it may slightly change its API  !!!
+Both of them are good, but the first of them lacks relative paths support (need to use ```__dirname```) and always recursive, 
+while the second one lacks file/dir filtering and for some reason store modules in non-hierarchical structure, taking only 
+one file from several ones with the same name. 
 
 ## Installation
 
@@ -31,8 +31,9 @@ npm install require-dir-all --save
 var modules = require('require-dir-all')('directory_to_require');
 ```
 
-Afterwards variable ```modules``` will contain exported values from all the files in directory 
-accessible as its properties, for example ```modules.module1``` as if they were require'd like:
+Now variable ```modules``` will contain exported values 
+from all the modules ```.js```, ```.json```, ```.coffee``` in directory 
+accessible by its properties, for example ```modules.module1``` as if they were require'd like:
 
 ```js
 modules = {
@@ -40,7 +41,9 @@ modules = {
   module2: require('module2')
 }
 ```
-    
+
+## Options
+
 You may provide additional options using second optional parameter:
 
 ```js
@@ -64,6 +67,54 @@ Options:
 - ```excludeDirs``` - reg exp to exclude subdirectories (when ```recursive: true``` ), 
   default: ```/^(\.(git|svn)|(node_modules))$/```, 
   which means to exclude directories ```.git```, ```.svn```, ```node_modules``` while going recursively 
+
+## Tips
+
+Typical task is to run the function for each required module.
+You may achieve this by following code:
+
+Simple way:
+
+If you need to wait until the end of initialization of all the modules, using ```async``` 
+(assuming each module's initialize method accepts callback as a parameter).
+
+Require'd file ```modules/module.js```
+
+```js
+module.exports = { 
+  initialize: function(cb) {
+    return cb(false, 'some result');
+  }
+};
+```
+
+Require'ing file ```index.js```:
+```js
+var async = require('async');
+var modules = require('require-dir-all')('modules');
+
+module.exports.initialize = function(cb) {
+  var initializers = [];
+  //_.forOwn(modules, function(module) {
+  for (var module in modules) { if (modules.hasOwnProperty(module)) {
+      initializers.push( function(cb) { return module.initialize(cb); } );
+  } }
+  // });
+  async.parallel(initializers, cb);
+};
+```
+
+If you do not need to wait:
+```js
+var modules = require('require-dir-all')('modules');
+
+module.exports.initialize = function(cb) {
+  for (var module in modules) { if (modules.hasOwnProperty(module)) {
+    return module.initialize(cb); ;
+  } }
+};
+```
+
 
 ### Simple 
 If you need to require all the ```.js```, ```.json```, ```.coffee``` files in the directory ```modules```, add following line:
@@ -307,15 +358,8 @@ npm install
 node app
 ```
 
-## TODO:
-Add ```modules.each``` property to make easier calling of same method for each module.
-```js
-modules.each(function(module) {
-  module.init();
-});
-```
-
 ## Links to package pages:
+
 [github.com](https://github.com/alykoshin/require-dir-all)
 [npmjs.com](https://www.npmjs.com/package/require-dir-all)
 [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)

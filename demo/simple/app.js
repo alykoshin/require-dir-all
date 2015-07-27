@@ -10,7 +10,7 @@ console.log('modules:', JSON.stringify(modules, null, 2));
 Output:
 
 modules: {
-  "module1": "module1.exports",
-  "module2": "module2.exports"
+  "module1": "string exported from module 1",
+  "module2": "string exported from module 2"
 }
 */

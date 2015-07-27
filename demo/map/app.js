@@ -13,10 +13,12 @@ var config = {
 var modules = require('require-dir-all')(
   'modules', // Directory to require
   {          // Options
+    // define function to be post-processed over exported object for each require-d module
     map: function(reqModule) {
-      // define function to be post-processed over exported object for each require-d module
+      // take the require'd module's exports value,
+      // create using it a new object using corresponding config as a parameter to constructor function
+      // and replace exported value with this object
       reqModule.exports =
-        // create new object with corresponding config passed to constructor
          new reqModule.exports( config[reqModule.name] );
       // Also may change the property name if needed
       // reqModule.name = 'prefix_'+reqModule.name;

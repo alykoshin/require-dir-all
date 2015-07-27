@@ -58,7 +58,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
       // Go recursively into subdirectory excluding matching patter excludeDirs
       if (options.recursive) {
         if ( !options.excludeDirs || !reqModule.filename.match(options.excludeDirs) ) {
-          // use filename instead of base to keep full directory name for directories with '.', like 'dir.1.2.3'
+          // use filename instead of base to keep complete directory name for directories with '.', like 'dir.1.2.3'
           reqModule.name = reqModule.filename;
           modules[reqModule.name] = requireDirAll(reqModule.filepath, options);
         }
