@@ -6,12 +6,9 @@
   "scripts": {
     "test": "make test",
     "test-travis": "make test-travis",
-    "_patch-release": "npm version patch  && git push --follow-tags",
-    "_minor-release": "npm version minor && npm publish && git push --follow-tags",
-    "_major-release": "npm version major && npm publish && git push --follow-tags",
-    "_preversion": "npm test",
-    "_version": "conventional-changelog -i CHANGELOG.md -p eslint -w && git add -u",
-    "_postversion": "git push && git push --tags && npm publish",
+    "patch-release": "npm version patch && npm publish && git push --follow-tags",
+    "minor-release": "npm version minor && npm publish && git push --follow-tags",
+    "major-release": "npm version major && npm publish && git push --follow-tags",
     "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
