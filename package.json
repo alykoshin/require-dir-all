@@ -6,6 +6,12 @@
   "scripts": {
     "test": "make test",
     "test-travis": "make test-travis",
+    "_patch-release": "npm version patch  && git push --follow-tags",
+    "_minor-release": "npm version minor && npm publish && git push --follow-tags",
+    "_major-release": "npm version major && npm publish && git push --follow-tags",
+    "preversion": "npm test",
+    "version": "conventional-changelog -i CHANGELOG.md -p eslint -w && git add -u",
+    "postversion": "git push && git push --tags && npm publish",
     "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
@@ -34,6 +40,7 @@
   "dependencies": {},
   "devDependencies": {
     "chai": "^3.2.0",
+    "conventional-changelog": "^0.2.1",
     "coveralls": "^2.11.3",
     "istanbul": "^0.3.17",
     "mocha": "^2.2.5",
