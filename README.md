@@ -365,7 +365,24 @@ npm install
 node app
 ```
 
-## Links to package pages:
+# TODO
+
+- Add support for glob definitions (other package - require-glob?)
+
+```js
+// from http://stackoverflow.com/a/28976201/2774010
+var glob = require( 'glob' )
+  , path = require( 'path' );
+
+glob.sync( './routes/**/*.js' ).forEach( function( file ) {
+  require( path.resolve( file ) );
+});
+```
+- Add support for array of dirs as the first parameter
+
+- Restructure README.md to make it more readable (as an example - browserify)
+
+# Links to package pages:
 
 [github.com](https://github.com/alykoshin/require-dir-all)
 [npmjs.com](https://www.npmjs.com/package/require-dir-all)
