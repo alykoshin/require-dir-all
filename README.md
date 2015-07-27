@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
 [![Coverage Status](http://coveralls.io/repos/alykoshin/require-dir-all/badge.svg?branch=master&service=github)](http://coveralls.io/github/alykoshin/require-dir-all?branch=master)
 [![Code Climate](https://codeclimate.com/github/alykoshin/require-dir-all/badges/gpa.svg)](https://codeclimate.com/github/alykoshin/require-dir-all)
+
 [![Dependency Status](https://david-dm.org/alykoshin/require-dir-all.svg)](https://david-dm.org/alykoshin/require-dir-all)
 [![devDependency Status](https://david-dm.org/alykoshin/require-dir-all/dev-status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=devDependencies)
 
