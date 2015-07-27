@@ -1,6 +1,6 @@
 {
   "name": "require-dir-all",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,9 @@
     "_patch-release": "npm version patch  && git push --follow-tags",
     "_minor-release": "npm version minor && npm publish && git push --follow-tags",
     "_major-release": "npm version major && npm publish && git push --follow-tags",
-    "preversion": "npm test",
-    "version": "conventional-changelog -i CHANGELOG.md -p eslint -w && git add -u",
-    "postversion": "git push && git push --tags && npm publish",
+    "_preversion": "npm test",
+    "_version": "conventional-changelog -i CHANGELOG.md -p eslint -w && git add -u",
+    "_postversion": "git push && git push --tags && npm publish",
     "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
