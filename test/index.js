@@ -39,6 +39,8 @@ describe('#same_dir test', function() {
   var root, modules, module1, module2;
 
   before('before', function() {
+    // This test can't use files from demos as we need to require 'require-dir-all' from the same dir
+    // while not using the package (as done in demo/*)
     root = './same_dir/';
 
     modules = require(root);

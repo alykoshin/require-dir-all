@@ -47,10 +47,10 @@ You may provide additional options using second optional parameter:
 var modules = require('require-dir-all')(
   'directory_to_require', // relative or absolute directory 
   { // options
-    map: function( ) { /* you may postprocess the name of property the module will be stored and exported object */ }
+    map: function(reqModule) { /* you may postprocess the name of property the module will be stored and exported object */ }
     recursive:    false,                          // recursively go through subdirectories; default value shown
     includeFiles: /^.*\.(js|json|coffee)$/,       // RegExp to select files; default value shown
-    excludeDir:   /^(\.git|\.svn|node_modules)$/  // RegExp to ignore subdirectories; default value shown
+    excludeDirs:   /^(\.git|\.svn|node_modules)$/  // RegExp to ignore subdirectories; default value shown
   }
 );
 ```
@@ -317,6 +317,9 @@ modules.each(function(module) {
 
 ## Links to package pages:
 [github.com](https://github.com/alykoshin/require-dir-all)
+-
 [npmjs.com](https://www.npmjs.com/package/require-dir-all)
+-
 [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
+-
 [coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all)
