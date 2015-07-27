@@ -6,8 +6,8 @@
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
-    "commit": "git commit -am \"auto commit by 'npm run commit'\" && npm test",
-    "push": "npm run commit && git push --follow-tags",
+    "commit": "git commit -am \"auto commit by 'npm run commit'\"",
+    "push": "npm run commit && npm test && git push --follow-tags",
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
     "minor-release": "npm version minor && npm publish && git push --follow-tags",
     "major-release": "npm version major && npm publish && git push --follow-tags",
