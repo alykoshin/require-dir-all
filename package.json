@@ -1,10 +1,10 @@
 {
   "name": "require-dir-all",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "index.js",
   "scripts": {
-    "test":        "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
