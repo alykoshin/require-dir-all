@@ -74,17 +74,24 @@ Options:
 
 Typical task is to run the function for each module required from the directory (like init or shutdown routines).
 With this module it is needed to reqursively go through all the properties (i.e.module's exports) 
-and run the function for each of tehm
+and run the function for each of them
 
 If you need to wait until the end of initialization of all the modules, using ```async``` 
 (assuming each module's initialize method accepts callback as a parameter).
 
-Require'd file ```modules/module.js```
+Please, be aware, that the methods below applicable only 
+
+Require'd files ```modules/module1.js``` and  ```modules/module2.js```
 
 ```js
-module.exports = { 
+var path = require('path'),
+  fileExt = path.extname(module.filename),
+  fileBase  = path.basename(module.filename, fileExt);
+
+module.exports = {
   initialize: function(cb) {
-    return cb(false, 'some result');
+    console.log('module ' + fileBase + ' initialized');
+    return cb(false, 'result from '+fileBase);
   }
 };
 ```
@@ -96,15 +103,28 @@ var _ = require('lodash');
 var async = require('async');
 var modules = require('require-dir-all')('modules');
 
-module.exports.initialize = function(cb) {
+var initialize = function(callback) {
   var initializers = [];
+
   _.forOwn(modules, function(module) {
-//  for (var module in modules) { if (modules.hasOwnProperty(module)) {
-      initializers.push( function(cb) { return module.initialize(cb); } );
-//  } }
+    initializers.push( function(cb) { return module.initialize(cb); } );
   });
-  async.parallel(initializers, cb);
+
+  async.parallel(initializers, callback);
 };
+
+initialize(function(err, results) {
+  console.log('initialize done; results:', results);
+});
+
+/*
+Output:
+
+module module1 initialized
+module module2 initialized
+initialize done; results: [ 'result from module1', 'result from module2' ]
+*/
+
 ```
 
 If you do not need to wait till the finish of initialization of both modules:
@@ -113,14 +133,16 @@ If you do not need to wait till the finish of initialization of both modules:
 var _ = require('lodash');
 var modules = require('require-dir-all')('modules');
 
-module.exports.initialize = function(cb) {
+module.exports.initialize = function() {
   _.forOwn(modules, function(module) {
 //  for (var module in modules) { if (modules.hasOwnProperty(module)) {
-      module.initialize(cb); ;
+      module.initialize(); ;
 //  } }
   });
 };
 ```
+
+See ```demo/initializers``` for an example
 
 ### Simple 
 

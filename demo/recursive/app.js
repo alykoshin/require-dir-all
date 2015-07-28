@@ -27,15 +27,21 @@ modules: {
   "module1": "string exported from module 1",
   "module2": "string exported from module 2"
 }
-
 */
-/*
-var iterate = function(modules) {
-  for (m in modules) {
-    if (modules.hasOwnProperty(m)) {
 
+// Iterate through all the modules
+
+var iterate = function(modules) {
+  for (var m in modules) {
+    if (modules.hasOwnProperty(m)) {
+      if (typeof modules[m] === 'string') {
+        console.log('module:', m,'; exports:', modules[m]);
+      } else {
+        console.log('subdir:', m);
+        iterate (modules[m]);
+      }
     }
   }
 };
 iterate(modules);
-*/
+
