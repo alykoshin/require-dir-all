@@ -367,7 +367,7 @@ node app
 
 # TODO
 
-- Add support for glob definitions (other package - require-glob?)
+- Add support for glob-like definitions?
 
 ```js
 // from http://stackoverflow.com/a/28976201/2774010
@@ -380,7 +380,7 @@ glob.sync( './routes/**/*.js' ).forEach( function( file ) {
 ```
 - Add support for array of dirs as the first parameter
 
-- Restructure README.md to make it more readable (as an example - browserify)
+- Restructure README.md to make it more readable (as an example - ```browserify```)
 
 # Links to package pages:
 
