@@ -13,8 +13,8 @@ Yet another Node.js helper to ```require``` all files in directory.
 Useful when needed to ```require``` group of files in same directory(-ies) with similar functionality, 
 like routes, controllers, middlewares, models, etc. 
 
-Inspired by [require-all](https://github.com/felixge/node-require-all) and 
-[require-dir](https://github.com/aseemk/requireDir) packages. 
+Inspired by [require-all](https://www.npmjs.com/package/require-all) and 
+[require-dir](https://www.npmjs.com/package/require-dir) packages. 
 Both of them are good, but the first of them lacks relative paths support (need to use ```__dirname```) and always recursive, 
 while the second one lacks file/dir filtering and for some reason store modules in non-hierarchical structure, taking only 
 one file from several ones with the same name. 
