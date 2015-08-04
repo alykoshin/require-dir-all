@@ -1,23 +1,20 @@
 {
   "name": "require-dir-all",
-  "version": "0.1.16",
+  "version": "0.2.0",
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
-
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
     "commit-and-push": "npm run _commit && npm test && npm run _push",
-
-    "_patch-release":  "npm version patch && npm publish",
-    "_minor-release":  "npm version minor && npm publish",
-    "_major-release":  "npm version major && npm publish",
-    "patch-release":   "npm test && npm run _patch-release && npm run _push",
-    "minor-release":   "npm test && npm run _minor-release && npm run _push",
+    "_patch-release": "npm version patch && npm publish",
+    "_minor-release": "npm version minor && npm publish",
+    "_major-release": "npm version major && npm publish",
+    "patch-release": "npm test && npm run _patch-release && npm run _push",
+    "minor-release": "npm test && npm run _minor-release && npm run _push",
     "__major-release": "npm test && npm run _major-release && npm run _push",
-
     "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
