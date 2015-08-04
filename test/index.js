@@ -70,6 +70,35 @@ describe('#same_dir test', function() {
 
 });
 
+describe('#same_dir test', function() {
+
+  var root, modules, module1, module2;
+
+  before('before', function() {
+    root = './array_dir/';
+
+    modules = require(root);
+
+    module1 = require(root+'dir1/module1');
+    module2 = require(root+'dir2/module2');
+  });
+
+  it('should return array corresponding to number of directories', function() {
+    modules.should.be.instanceof(Array);
+    modules.should.have.length(2);
+  });
+
+  it('should have same value for module1 as regular require()', function() {
+    modules[0].should.have.property('module1', module1);
+  });
+
+  it('should have same value for module2 as regular require()', function() {
+    modules[1].should.have.property('module2', module2);
+  });
+
+});
+
+
 describe('#recursive demo test', function() {
 
   var root, modules, module1, module2, module3, module4, module5;

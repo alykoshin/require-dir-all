@@ -22,6 +22,59 @@ delete require.cache[__filename];
 //
 //////////////// ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+function isExcludedFile(reqModule, reIncludeFiles) {
+  return (reqModule.filepath === parentFile) ||   // Exclude require'ing file
+    (reIncludeFiles && !reqModule.filename.match(reIncludeFiles)); // Exclude files non-matched to patter includeFiles
+}
+
+function isExcludedDir(reqModule, reExcludeDirs) {
+  return  reExcludeDirs && reqModule.filename.match(reExcludeDirs);
+}
+
+function _requireDirAll(absDir, options) {
+  var modules = {};
+
+  var files = fs.readdirSync(absDir);
+
+  for (var length=files.length, i=0; i<length; ++i) {
+
+    var reqModule = {};
+    reqModule.filename = files[i];                                         // full filename without path
+    reqModule.ext      = path.extname(reqModule.filename);                 // file extension
+    reqModule.base     = path.basename(reqModule.filename, reqModule.ext); // filename without extension
+    reqModule.filepath = path.join(absDir, reqModule.filename);            // full filename with absolute path
+
+    //console.log('reqModule:', reqModule);
+
+    // If this is subdirectory, then descend recursively into it (excluding matching patter excludeDirs)
+    if (fs.statSync(reqModule.filepath).isDirectory() &&
+      options.recursive &&
+      ! isExcludedDir(reqModule, options.excludeDirs) ) {
+
+      // use filename instead of base to keep complete directory name for directories with '.', like 'dir.1.2.3'
+      reqModule.name = reqModule.filename;
+      modules[reqModule.name] = _requireDirAll(reqModule.filepath, options);
+
+    } else if ( ! isExcludedFile(reqModule, options.includeFiles)) {
+      reqModule.name = reqModule.base;
+      reqModule.exports = require(reqModule.filepath);
+      if (options.map) {
+        options.map(reqModule);
+      }
+      modules[reqModule.name] = reqModule.exports;
+    }
+
+  }
+
+  return modules;
+}
+
+/**
+ *
+ * @param relOrAbsDir String || [] - Directory or array of directories to 'require'
+ * @param options {{}}             - Set of options
+ * @returns {{} || []}             - Returns object with require'd modules or array of such objects
+ */
 module.exports = function requireDirAll(relOrAbsDir, options) {
 
   relOrAbsDir = relOrAbsDir || '.';
@@ -31,54 +84,20 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
   options.excludeDirs  = options.excludeDirs  || /^(\.git|\.svn|node_modules)$/;
   options.map          = options.map          || null;
 
-  //console.log('relOrAbsDir:', relOrAbsDir, '; options:', options);
+  var absDir;
+  if (typeof relOrAbsDir === 'string') {
+    absDir = path.resolve(parentDir, relOrAbsDir);
+    //console.log('relOrAbsDir:', relOrAbsDir, '; options:', options);
+    return _requireDirAll(absDir, options);
 
-  var modules = {};
-
-  var absDir = path.resolve(parentDir, relOrAbsDir);
-  var files = fs.readdirSync(absDir);
-
-  for (var length=files.length, i=0; i<length; ++i) {
-
-    var reqModule = {};
-    reqModule.filename = files[i];
-    reqModule.ext      = path.extname(reqModule.filename);
-    reqModule.base     = path.basename(reqModule.filename, reqModule.ext);
-    reqModule.filepath = path.join(absDir, reqModule.filename);
-
-    //console.log('reqModule:', reqModule);
-
-    // Exclude require'ing file
-    if (reqModule.filepath === parentFile) {
-      continue;
+  } else { // Assume it is array
+    var modulesArray = [];
+    for (var length=relOrAbsDir.length, i=0; i<length; ++i) {
+      //console.log('relOrAbsDir:', relOrAbsDir, '; options:', options);
+      absDir = path.resolve(parentDir, relOrAbsDir[i]);
+      modulesArray.push(_requireDirAll(absDir, options));
     }
-
-    // Is it directory?
-    if (fs.statSync(reqModule.filepath).isDirectory()) {
-      // Go recursively into subdirectory excluding matching patter excludeDirs
-      if (options.recursive) {
-        if ( !options.excludeDirs || !reqModule.filename.match(options.excludeDirs) ) {
-          // use filename instead of base to keep complete directory name for directories with '.', like 'dir.1.2.3'
-          reqModule.name = reqModule.filename;
-          modules[reqModule.name] = requireDirAll(reqModule.filepath, options);
-        }
-      }
-    } else {
-
-      // Exclude files non-matched to patter includeFiles
-      if (options.includeFiles && !reqModule.filename.match(options.includeFiles)) {
-        continue;
-      }
-
-      reqModule.name = reqModule.base;
-      reqModule.exports = require(reqModule.filepath);
-      if (options.map) { options.map(reqModule); }
-
-      modules[reqModule.name] = reqModule.exports;
-    }
+    return modulesArray;
 
   }
-
-  return modules;
-
 };
