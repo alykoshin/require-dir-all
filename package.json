@@ -11,7 +11,7 @@
     "commit-and-push": "npm run _commit && npm test && npm run _push",
     "patch-release": "npm test && npm version patch && npm publish && git push --follow-tags",
     "minor-release": "npm test && npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm test && npm version major && npm publish && git push --follow-tags",
+    "_major-release": "npm test && npm version major && npm publish && git push --follow-tags",
     "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {

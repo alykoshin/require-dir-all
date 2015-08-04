@@ -54,8 +54,8 @@ Variable ```modules``` will be array of objects with module's exports, equivalen
 
 ```js
 modules = [
-  { module1: require('module1') },
-  { module2: require('module2') }
+  { module1: require('dir1/module1') },
+  { module2: require('dir2/module2') }
 ]
 ```
 
