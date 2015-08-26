@@ -20,17 +20,68 @@ var parentDir = path.dirname(parentFile);
 // require(), so important: we clear the require() cache each time!
 delete require.cache[__filename];
 //
-//////////////// ////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Require Module definition (passed to map function)
+ *
+ * @typedef {object} RequireModule
+ * @property {string} filename     - filename with extension, without path
+ * @property {string} ext          - file extension
+ * @property {string} base         - filename without extension
+ * @property {string} filepath     - full file path
+ * @property {string} name         - module name
+ * @property {{}} exports          - module's exports
+ */
+
+/**
+ * Map function
+ *
+ * @callback RequireMap
+ * @param {RequireModule} requireModule
+ */
+
+/**
+ * Options for require-dir-all
+ *
+ * @typedef {object} RequireOptions
+ * @property {boolean} recursive    - go recursively into subdirectories
+ * @property {RegExp} excludeDirs   - RegExp to exclude directories
+ * @property {RegExp} includeFiles  - RegExp to include files
+ * @property {RequireMap} map       - map function to be called for each required module
+ */
+
+/**
+ * Check if the module to be excluded
+ *
+ * @param {RequireModule} reqModule
+ * @param {RegExp} reIncludeFiles
+ * @returns {boolean}
+ */
 function isExcludedFile(reqModule, reIncludeFiles) {
-  return (reqModule.filepath === parentFile) ||   // Exclude require'ing file
-    (reIncludeFiles && !reqModule.filename.match(reIncludeFiles)); // Exclude files non-matched to patter includeFiles
+  return !! ( (reqModule.filepath === parentFile) ||   // Exclude require'ing file
+    (reIncludeFiles && !reqModule.filename.match(reIncludeFiles)) ); // Exclude files non-matched to pattern includeFiles
 }
 
+/**
+ * Check if the directory to be excluded
+ *
+ * @param {RequireModule} reqModule
+ * @param {RegExp} reExcludeDirs
+ * @returns {boolean}
+ */
 function isExcludedDir(reqModule, reExcludeDirs) {
-  return  reExcludeDirs && reqModule.filename.match(reExcludeDirs);
+  return  !! ( reExcludeDirs && reqModule.filename.match(reExcludeDirs) );
 }
 
+/**
+ * Main function. Recursively go through directories and require modules according to options
+ *
+ * @param   {string}  absDir
+ * @param   {RequireOptions} options
+ * @returns {object}
+ * @private
+ */
 function _requireDirAll(absDir, options) {
   var modules = {};
 
@@ -51,8 +102,11 @@ function _requireDirAll(absDir, options) {
       options.recursive &&
       ! isExcludedDir(reqModule, options.excludeDirs) ) {
 
-      // use filename instead of base to keep complete directory name for directories with '.', like 'dir.1.2.3'
+      // use filename (with extension) instead of base name (without extension)
+      // to keep complete directory name for directories with '.', like 'dir.1.2.3'
       reqModule.name = reqModule.filename;
+
+      // go recursively into subdirectory
       modules[reqModule.name] = _requireDirAll(reqModule.filepath, options);
 
     } else if ( ! isExcludedFile(reqModule, options.includeFiles)) {
@@ -70,10 +124,12 @@ function _requireDirAll(absDir, options) {
 }
 
 /**
+ * Main entry point. Analyse input parameters and invoke main function _requireDirAll()
  *
- * @param relOrAbsDir String || [] - Directory or array of directories to 'require'
- * @param options {{}}             - Set of options
- * @returns {{} || []}             - Returns object with require'd modules or array of such objects
+ * @param { string||string[] } [relOrAbsDir]  - Directory or array of directories to 'require'
+ * @param {RequireOptions} [options]                        - Set of options
+ * @returns {object || object[]}                        - Returns object with require'd modules or array of such objects
+ * @public
  */
 module.exports = function requireDirAll(relOrAbsDir, options) {
 
@@ -85,6 +141,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
   options.map          = options.map          || null;
 
   var absDir;
+
   if (typeof relOrAbsDir === 'string') {
     absDir = path.resolve(parentDir, relOrAbsDir);
     //console.log('relOrAbsDir:', relOrAbsDir, '; options:', options);
@@ -98,6 +155,5 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
       modulesArray.push(_requireDirAll(absDir, options));
     }
     return modulesArray;
-
   }
 };

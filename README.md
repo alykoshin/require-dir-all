@@ -402,6 +402,12 @@ npm install
 node app
 ```
 
+# Run tests:
+
+```
+npm test
+```
+
 # TODO
 
 - Add support for glob-like definitions?
@@ -425,3 +431,4 @@ glob.sync( './routes/**/*.js' ).forEach( function( file ) {
 [npmjs.com](https://www.npmjs.com/package/require-dir-all)
 [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
 [coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all)
+[inch-ci.org](http://inch-ci.org/github/alykoshin/require-dir-all)
