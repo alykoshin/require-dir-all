@@ -19,6 +19,9 @@ Both of them are good, but the first of them lacks relative paths support (need 
 while the second one lacks file/dir filtering and for some reason store modules in non-hierarchical structure, taking only 
 one file from several ones with the same name. 
 
+
+If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/require-dir-all/issues).
+
 ## Installation
 
 ```sh
