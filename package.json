@@ -1,6 +1,6 @@
 {
   "name": "require-dir-all",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "index.js",
   "scripts": {
@@ -40,8 +40,7 @@
     "url": "https://github.com/alykoshin/require-dir-all/issues"
   },
   "homepage": "https://github.com/alykoshin/require-dir-all#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "^3.2.0",
     "coveralls": "^2.11.3",
