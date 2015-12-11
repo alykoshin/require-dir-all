@@ -7,7 +7,7 @@
 [![devDependency Status](https://david-dm.org/alykoshin/require-dir-all/dev-status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=devDependencies)
 
 require-dir-all
-=================
+===============
 
 Yet another Node.js helper to ```require``` all files in directory.
 Useful when needed to ```require``` group of files in same directory(-ies) with similar functionality, 
@@ -25,7 +25,7 @@ If you have different needs regarding the functionality, please add a [feature r
 ## Installation
 
 ```sh
-npm install require-dir-all --save
+npm install --save require-dir-all
 ```
 
 ## Usage
