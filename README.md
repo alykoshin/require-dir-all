@@ -2,12 +2,13 @@
 [![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
 [![Coverage Status](http://coveralls.io/repos/alykoshin/require-dir-all/badge.svg?branch=master&service=github)](http://coveralls.io/github/alykoshin/require-dir-all?branch=master)
 [![Code Climate](https://codeclimate.com/github/alykoshin/require-dir-all/badges/gpa.svg)](https://codeclimate.com/github/alykoshin/require-dir-all)
+[![Inch CI](http://inch-ci.org/github/alykoshin/require-dir-all.svg?branch=master)](http://inch-ci.org/github/alykoshin/require-dir-all)
 
 [![Dependency Status](https://david-dm.org/alykoshin/require-dir-all/status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=dependencies)
 [![devDependency Status](https://david-dm.org/alykoshin/require-dir-all/dev-status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=devDependencies)
 
-require-dir-all
-===============
+
+# require-dir-all
 
 Yet another Node.js helper to ```require``` all files in directory.
 Useful when needed to ```require``` group of files in same directory(-ies) with similar functionality, 
@@ -22,13 +23,16 @@ one file from several ones with the same name.
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/require-dir-all/issues).
 
+
 ## Installation
 
 ```sh
 npm install --save require-dir-all
 ```
 
+
 ## Usage
+
 
 ### Basic usage
 
@@ -62,6 +66,7 @@ modules = [
 ]
 ```
 
+
 ## Options
 
 You may provide additional options using second optional parameter:
@@ -87,6 +92,7 @@ Options:
 - ```excludeDirs``` - reg exp to exclude subdirectories (when ```recursive: true``` ), 
   default: ```/^(\.(git|svn)|(node_modules))$/```, 
   which means to exclude directories ```.git```, ```.svn```, ```node_modules``` while going recursively 
+
 
 ## Tips
 
@@ -162,6 +168,7 @@ module.exports.initialize = function() {
 
 See ```demo/initializers``` for an example
 
+
 ### Simple 
 
 If you need to require all the ```.js```, ```.json```, ```.coffee``` files in the directory ```modules```, add following line:
@@ -189,6 +196,7 @@ modules = {
 ```
                       
 By default directories ```.git```, ```.svn```, ```node_modules``` are excluded.
+
 
 #### Example 
  
@@ -239,9 +247,11 @@ npm install
 node app
 ```
 
+
 ### Recursive
 
 Option ```recursive: true``` allows to require recursively the directory and all its subdirectories.
+
 
 #### Example
 
@@ -301,6 +311,7 @@ modules: {
   "module2": "string exported from module 2"
 }
 ```
+
 
 ### Map
 
@@ -405,13 +416,15 @@ npm install
 node app
 ```
 
-# Run tests:
+
+## Run tests:
 
 ```
 npm test
 ```
 
-# TODO
+
+## TODO
 
 - Add support for glob-like definitions?
 
@@ -428,10 +441,7 @@ glob.sync( './routes/**/*.js' ).forEach( function( file ) {
 
 - Restructure README.md to make it more readable (as an example - ```browserify```)
 
-# Links to package pages:
 
-[github.com](https://github.com/alykoshin/require-dir-all)
-[npmjs.com](https://www.npmjs.com/package/require-dir-all)
-[travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all)
-[coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all)
-[inch-ci.org](http://inch-ci.org/github/alykoshin/require-dir-all)
+## Links to package pages:
+
+[github.com](https://github.com/alykoshin/require-dir-all) &nbsp; [npmjs.com](https://www.npmjs.com/package/require-dir-all) &nbsp; [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all) &nbsp; [coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all) &nbsp; [inch-ci.org](http://inch-ci.org/github/alykoshin/require-dir-all)
