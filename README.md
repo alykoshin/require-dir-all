@@ -1,8 +1,8 @@
 [![npm version](https://badge.fury.io/js/require-dir-all.svg)](http://badge.fury.io/js/require-dir-all)
 [![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
-[![Coverage Status](http://coveralls.io/repos/alykoshin/require-dir-all/badge.svg?branch=master&service=github)](http://coveralls.io/github/alykoshin/require-dir-all?branch=master)
+[![Coverage Status](https://coveralls.io/repos/alykoshin/require-dir-all/badge.svg?branch=master&service=github)](https://coveralls.io/github/alykoshin/require-dir-all?branch=master)
 [![Code Climate](https://codeclimate.com/github/alykoshin/require-dir-all/badges/gpa.svg)](https://codeclimate.com/github/alykoshin/require-dir-all)
-[![Inch CI](http://inch-ci.org/github/alykoshin/require-dir-all.svg?branch=master)](http://inch-ci.org/github/alykoshin/require-dir-all)
+[![Inch CI](https://inch-ci.org/github/alykoshin/require-dir-all.svg?branch=master)](https://inch-ci.org/github/alykoshin/require-dir-all)
 
 [![Dependency Status](https://david-dm.org/alykoshin/require-dir-all/status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=dependencies)
 [![devDependency Status](https://david-dm.org/alykoshin/require-dir-all/dev-status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=devDependencies)
@@ -10,15 +10,9 @@
 
 # require-dir-all
 
-Yet another Node.js helper to ```require``` all files in directory.
-Useful when needed to ```require``` group of files in same directory(-ies) with similar functionality, 
-like routes, controllers, middlewares, models, etc. 
+Yet another Node.js helper to `require` all files in directory. Useful when needed to `require` group of files in same directory(-ies) with similar functionality, like routes, controllers, middlewares, models, etc. 
 
-Inspired by [require-all](https://www.npmjs.com/package/require-all) and 
-[require-dir](https://www.npmjs.com/package/require-dir) packages. 
-Both of them are good, but the first of them lacks relative paths support (need to use ```__dirname```) and always recursive, 
-while the second one lacks file/dir filtering and for some reason store modules in non-hierarchical structure, taking only 
-one file from several ones with the same name. 
+Inspired by [require-all](https://www.npmjs.com/package/require-all) and [require-dir](https://www.npmjs.com/package/require-dir) packages. Both of them are good, but the first of them lacks relative paths support (need to use `__dirname`) ~~and always recursive~~, while the second one lacks file/dir filtering, ~~for some reason store modules in non-hierarchical structure, taking only one file from several ones with the same name~~ and it is not possible to automatically run function on each require'd file.
 
 
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/require-dir-all/issues).
@@ -40,9 +34,9 @@ npm install --save require-dir-all
 var modules = require('require-dir-all')('directory_to_require');
 ```
 
-Now variable ```modules``` will contain exported values 
-from all the modules ```.js```, ```.json```, ```.coffee``` in directory 
-accessible by its properties, for example ```modules.module1``` as if they were require'd like:
+Now variable `modules` will contain exported values 
+from all the modules `.js`, `.json`, `.coffee` in directory 
+accessible by its properties, for example `modules.module1` as if they were require'd like:
 
 ```js
 modules = {
@@ -51,13 +45,13 @@ modules = {
 }
 ```
 
-If you need more than one directory to ```require```, you can provide array of directories:
+If you need more than one directory to `require`, you can provide array of directories:
 
 ```js
 var modules = require('require-dir-all')(['dir1', dir2]);
 ```
 
-Variable ```modules``` will be array of objects with module's exports, equivalent to:
+Variable `modules` will be array of objects with module's exports, equivalent to:
 
 ```js
 modules = [
@@ -84,14 +78,14 @@ var modules = require('require-dir-all')(
 ```
 
 Options:    
-- ```map```: function to postprocess each ```require```'d file (see example below); default: ```null```
-- ```recursive```  - recursively go through subdirectories; default: ```false```
-- ```includeFiles``` - reg exp to include files,
-  default: ```/^.*\.(js|json|coffee)$/```, 
-  which means to ```require``` only ```.js```, ```.json```, ```.coffee``` files
-- ```excludeDirs``` - reg exp to exclude subdirectories (when ```recursive: true``` ), 
-  default: ```/^(\.(git|svn)|(node_modules))$/```, 
-  which means to exclude directories ```.git```, ```.svn```, ```node_modules``` while going recursively 
+- `map`: function to postprocess each `require`'d file (see example below); default: `null`
+- `recursive`  - recursively go through subdirectories; default: ```false```
+- `includeFiles` - reg exp to include files,
+  default: `/^.*\.(js|json|coffee)$/`, 
+  which means to `require` only `.js`, `.json`, `.coffee` files
+- `excludeDirs` - reg exp to exclude subdirectories (when `recursive: true` ), 
+  default: `/^(\.(git|svn)|(node_modules))$/`, 
+  which means to exclude directories `.git`, `.svn`, `node_modules` while going recursively 
 
 
 ## Tips
@@ -100,12 +94,12 @@ Typical task is to run the function for each module required from the directory 
 With this module it is needed to reqursively go through all the properties (i.e.module's exports) 
 and run the function for each of them
 
-If you need to wait until the end of initialization of all the modules, using ```async``` 
+If you need to wait until the end of initialization of all the modules, using `async` 
 (assuming each module's initialize method accepts callback as a parameter).
 
 Please, be aware, that the methods below applicable only 
 
-Require'd files ```modules/module1.js``` and  ```modules/module2.js```
+Require'd files `modules/module1.js` and  `modules/module2.js`
 
 ```js
 var path = require('path'),
@@ -120,7 +114,7 @@ module.exports = {
 };
 ```
 
-Require'ing file ```index.js```:
+Require'ing file `index.js`:
 
 ```js
 var _ = require('lodash');
@@ -166,12 +160,12 @@ module.exports.initialize = function() {
 };
 ```
 
-See ```demo/initializers``` for an example
+See `demo/initializers` for an example
 
 
 ### Simple 
 
-If you need to require all the ```.js```, ```.json```, ```.coffee``` files in the directory ```modules```, add following line:
+If you need to require all the `.js`, `.json`, `.coffee` files in the directory `modules`, add following line:
 
 ```js
 var modules = require('require-dir-all')('modules');
@@ -184,7 +178,7 @@ var require_dir_all = require('require-dir-all');
 var modules = require_dir_all('modules');
 ```
 
-Object ```modules``` will be populated with properties which names will correspond to module names and values - to exported 
+Object `modules` will be populated with properties which names will correspond to module names and values - to exported 
 objects. 
 Traditional equivalent:
 
@@ -195,7 +189,7 @@ modules = {
 }
 ```
                       
-By default directories ```.git```, ```.svn```, ```node_modules``` are excluded.
+By default directories `.git`, `.svn`, `node_modules` are excluded.
 
 
 #### Example 
@@ -209,19 +203,19 @@ modules/
 app.js
 ```
 
-File ```module1.js``` exports:
+File `module1.js` exports:
 
 ```
 module.exports = 'string exported from module 1';
 ```
 
-File ```module2.js``` exports:
+File `module2.js` exports:
 
 ```
 module.exports = 'string exported from module 2';
 ```
 
-In ```app.js```:
+In `app.js`:
 
 ```js
 var modules = require('require-dir-all')('modules');
@@ -238,7 +232,7 @@ modules: {
 }
 ```
 
-You can find this example in ```demo/simple/```
+You can find this example in `demo/simple/`
 To run it: 
 
 ```js
@@ -250,14 +244,15 @@ node app
 
 ### Recursive
 
-Option ```recursive: true``` allows to require recursively the directory and all its subdirectories.
+Option `recursive: true` allows to require recursively the directory and all its subdirectories.
 
 
 #### Example
 
-You can find this example in ```demo/recursive/```
+You can find this example in `demo/recursive/`
 
 Directory structure:
+
 ```sh
 $ ls -R demo/recursive/modules/
 demo/recursive/modules/:
@@ -279,7 +274,7 @@ demo/recursive/modules/excluded.2:
 excluded.js
 ```
 
-File app.js:
+File `app.js`:
 
 ```js
 'use strict';
@@ -315,16 +310,16 @@ modules: {
 
 ### Map
 
-Option ```map``` allows to define function to run for each ```require```'d file.
+Option `map` allows to define function to run for each `require`'d file.
 
 Object properties.
 These properties may be changed:
-- ```name``` - module name to be stored in result object 
-- ```exports``` - module's exports value 
+- `name` - module name to be stored in result object 
+- `exports` - module's exports value 
 These properties are read-only:
-- ```path``` - filepath,
-- ```base``` - base part of file name,
-- ```ext``` - file extension
+- `path` - filepath,
+- `base` - base part of file name,
+- `ext` - file extension
 
 
 Assume you have following structure:
@@ -335,8 +330,9 @@ modules/
   module2
 ```
 
-If each file ```module1.js```, ```module2.js``` in ```modules``` directory exports a constructor
+If each file `module1.js`, `module2.js` in `modules` directory exports a constructor
  to which the some config parameters are passed like this:
+ 
 ```js
 'use strict';
 
@@ -350,15 +346,19 @@ var Object1 = function(config) {
 module.exports = Object1;
 ```
 
-and the code which ```require```'s these files in ```app_old.js``` is like following:
+and the code which `require`'s these files in `app_old.js` is like following:
 
 ```js
-// For 
+// configs for each module
 var config1 = { value: 'config1' },
   config2 = 'config2';
-  
-var module1 = new (require('modules/module1'))(config1),
-  module2 = new ()require('module/module2'))(config2);
+
+// require all the needed files
+var module1 = new (require('./modules/module1'))(config1),
+  module2 = new (require('./modules/module2'))(config2);
+
+console.log('object from module1:', module1);
+console.log('object from module2:', module2);
 ```
 
 You may replace this with following code:
@@ -410,6 +410,7 @@ modules: {
 
 You can find this example in ```demo/map/```
 To run it: 
+
 ```sh
 cd demo/map/
 npm install
@@ -439,9 +440,18 @@ glob.sync( './routes/**/*.js' ).forEach( function( file ) {
 ```
 - Add support for array of dirs as the first parameter
 
-- Restructure README.md to make it more readable (as an example - ```browserify```)
+- Restructure README.md to make it more readable (as an example - `browserify`)
+
+
+## Credits
+[Alexander](https://github.com/alykoshin/)
 
 
 ## Links to package pages:
 
-[github.com](https://github.com/alykoshin/require-dir-all) &nbsp; [npmjs.com](https://www.npmjs.com/package/require-dir-all) &nbsp; [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all) &nbsp; [coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all) &nbsp; [inch-ci.org](http://inch-ci.org/github/alykoshin/require-dir-all)
+[github.com](https://github.com/alykoshin/require-dir-all) &nbsp; [npmjs.com](https://www.npmjs.com/package/require-dir-all) &nbsp; [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all) &nbsp; [coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all) &nbsp; [inch-ci.org](https://inch-ci.org/github/alykoshin/require-dir-all)
+
+
+## License
+
+MIT
