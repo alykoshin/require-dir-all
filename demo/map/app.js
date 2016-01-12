@@ -11,7 +11,7 @@ var config = {
 
 // Require all files in modules subdirectory
 //var modules = require('require-dir-all')(
-var modules = require('../..')( // as this demo is the part of package itself, require index file of the package
+var modules = require('../../index.js')( // as this demo is the part of package itself, require index file of the package
   'modules', // Directory to require
   {          // Options
     // define function to be post-processed over exported object for each require-d module

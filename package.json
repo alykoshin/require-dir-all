@@ -4,6 +4,11 @@
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "./index.js",
   "scripts": {
+    "nsp": "nsp check",
+    "ncu": "npm-check-updates --error-level 2",
+    "lint": "eslint -f unix .",
+    "inspect": "jsinspect",
+    "pretest": "npm run lint && npm run inspect && npm run nsp && npm run ncu",
     "test": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
@@ -47,6 +52,7 @@
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "mockery": "^1.4.0",
+    "npm-check-updates": "^2.5.6",
     "nsp": "^2.2.0"
   }
 }
