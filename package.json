@@ -2,9 +2,9 @@
   "name": "require-dir-all",
   "version": "0.2.5",
   "description": "Yet another Node.js helper to require all files in directory",
-  "main": "index.js",
+  "main": "./index.js",
   "scripts": {
-    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
+    "test": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
@@ -42,10 +42,11 @@
   "homepage": "https://github.com/alykoshin/require-dir-all#readme",
   "dependencies": {},
   "devDependencies": {
-    "chai": "^3.2.0",
-    "coveralls": "^2.11.3",
-    "istanbul": "^0.4.0",
-    "mocha": "^2.2.5",
-    "mockery": "^1.4.0"
+    "chai": "^3.4.1",
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.4",
+    "mockery": "^1.4.0",
+    "nsp": "^2.2.0"
   }
 }

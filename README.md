@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/require-dir-all.svg)](http://badge.fury.io/js/require-dir-all)
+[![npm version](https://badge.fury.io/js/require-dir-all.svg)](https://badge.fury.io/js/require-dir-all)
 [![Build Status](https://travis-ci.org/alykoshin/require-dir-all.svg)](https://travis-ci.org/alykoshin/require-dir-all)
 [![Coverage Status](https://coveralls.io/repos/alykoshin/require-dir-all/badge.svg?branch=master&service=github)](https://coveralls.io/github/alykoshin/require-dir-all?branch=master)
 [![Code Climate](https://codeclimate.com/github/alykoshin/require-dir-all/badges/gpa.svg)](https://codeclimate.com/github/alykoshin/require-dir-all)
@@ -153,9 +153,7 @@ var modules = require('require-dir-all')('modules');
 
 module.exports.initialize = function() {
   _.forOwn(modules, function(module) {
-//  for (var module in modules) { if (modules.hasOwnProperty(module)) {
       module.initialize(); ;
-//  } }
   });
 };
 ```
@@ -376,7 +374,7 @@ var modules = require('require-dir-all')(
   'modules', // Directory to require
   {          // Options
     map: function(reqModule) {
-      // define function to be post-processed over exported object for each require-d module
+      // define function to be post-processed over exported object for each require'd module
       reqModule.exports =
         // create new object with corresponding config passed to constructor
          new reqModule.exports( config[reqModule.name] );

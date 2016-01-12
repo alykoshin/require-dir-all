@@ -2,7 +2,8 @@
 
 'use strict';
 
-var modules = require('require-dir-all')();
+//var modules = require('require-dir-all')();
+var modules = require('../..')(); // as this demo is the part of package itself, require index file of the package
 
 console.log('modules:', JSON.stringify(modules, null, 2));
 

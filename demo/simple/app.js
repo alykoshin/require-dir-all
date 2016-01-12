@@ -2,7 +2,8 @@
 
 'use strict';
 
-var modules = require('require-dir-all')('modules');
+//var modules = require('require-dir-all')('modules');
+var modules = require('../..')('modules');
 
 console.log('modules:', JSON.stringify(modules, null, 2));
 

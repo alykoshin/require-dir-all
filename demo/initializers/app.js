@@ -1,8 +1,11 @@
 // See README.md for details.
 
+'use strict';
+
 var _ = require('lodash');
 var async = require('async');
-var modules = require('require-dir-all')('modules');
+//var modules = require('require-dir-all')('modules');
+var modules = require('../..')('modules'); // as this demo is the part of package itself, require index file of the package
 
 var initialize = function(callback) {
   var initializers = [];
