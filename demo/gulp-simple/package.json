@@ -1,0 +1,10 @@
+{
+  "description": "Demo for npm package require-dir-all",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "require-dir-all": "latest",
+    "gulp": "^3.9.0"
+  }
+}

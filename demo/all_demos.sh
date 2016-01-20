@@ -4,6 +4,7 @@ echo
 echo "* Running all the demos..."
 echo
 
+
 echo "* simple"
 node simple/app.js
 echo
@@ -23,5 +24,20 @@ echo
 echo "* initializers"
 node initializers/app.js
 echo
+
+
+echo "* config files"
+node config/app.js
+echo
+
+
+echo "* gulp-simple"
+gulp --cwd gulp-simple
+echo
+
+echo "* gulp-advanced"
+gulp --cwd gulp-advanced
+echo
+
 
 echo "* Finished."

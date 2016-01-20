@@ -2,8 +2,8 @@
 
 'use strict';
 
-//var modules = require('require-dir-all')('modules');
-var config = require('../../index.js')('config', {recursive: true}); // as this demo is the part of package itself, require index file of the package
+//var config = require('require-dir-all')('config', { recursive: true });
+var config = require('../../index.js')('config', { recursive: true }); // as this demo is the part of package itself, require index file of the package
 
 console.log('config:', JSON.stringify(config, null, 2));
 

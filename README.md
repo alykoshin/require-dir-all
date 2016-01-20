@@ -28,12 +28,10 @@ npm install --save require-dir-all
 # Usage
 
 There are several most common cases to use this module. In all of them some part of the application is splitted into several smaller modules with the same initialization logic and similar functionality. Modules may be grouped into subdirectories. Typical examples are
-- routes (controllers, middlewares) for `express` application, models and datasources;
-- config files;
-- gulp tasks;
-- etc
-
-If your need is to structure one huge config file into several smaller config file, while keeping your code clean, you may go directly to [config files how-to](https://github.com/alykoshin/require-dir-all/wiki/config-howto) with simple example illustration the principles.
+- Routes (controllers, middlewares) for `express` application, models and datasources;
+- Gulp tasks. If you want to see an examples how to use `require-dir-all` in Gulp files, you may look to `gulp-simple` and `gulp-advanced` in `demo` subdirectory of the module.
+- Config files. If your need is to structure one huge config file into several smaller config file, while keeping your code clean, you may go directly to separated article [config files how-to](https://github.com/alykoshin/require-dir-all/wiki/config-howto) illustrating the principles.
+etc
 
 
 ## Basic usage
@@ -86,7 +84,7 @@ var modules = require('require-dir-all')(
 ```
 
 Options:    
-- `map`: function to postprocess each `require`'d file (see example below); default: `null`
+- `map`: function to postprocess each `require`'d file (for more details see [map option descripion](#map) below); default: `null`
 - `recursive`  - recursively go through subdirectories; default: ```false```
 - `includeFiles` - reg exp to include files,
   default: `/^.*\.(js|json|coffee)$/`, 
@@ -337,8 +335,7 @@ modules/
   module2
 ```
 
-If each file `module1.js`, `module2.js` in `modules` directory exports a constructor
- to which the some config parameters are passed like this:
+If each file `module1.js`, `module2.js` in `modules` directory exports a constructor to which the some config parameters are passed like this:
  
 ```js
 'use strict';
@@ -387,7 +384,7 @@ var modules = require('require-dir-all')(
       reqModule.exports =
         // create new object with corresponding config passed to constructor
          new reqModule.exports( config[reqModule.name] );
-      // Also may change the property name if needed
+      // Also you may change the property name if needed
       // reqModule.name = 'prefix_'+reqModule.name;
     }
   }
