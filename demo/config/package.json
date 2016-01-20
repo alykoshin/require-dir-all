@@ -1,0 +1,7 @@
+{
+  "description": "Demo for npm package require-dir-all",
+  "license": "MIT",
+  "dependencies": {
+    "require-dir-all": "latest"
+  }
+}

@@ -10,7 +10,7 @@
 
 # require-dir-all
 
-Yet another Node.js helper to `require` all files in directory. Useful when needed to `require` group of files in same directory(-ies) with similar functionality, like routes, controllers, middlewares, models, etc. 
+Yet another Node.js helper to `require` all files in directory. Useful when needed to `require` group of files in same directory(-ies) with similar functionality, like routes, controllers, middlewares, models, config, gulp tasks etc. 
 
 Inspired by [require-all](https://www.npmjs.com/package/require-all) and [require-dir](https://www.npmjs.com/package/require-dir) packages. Both of them are good, but the first of them lacks relative paths support (need to use `__dirname`) ~~and always recursive~~, while the second one lacks file/dir filtering, ~~for some reason store modules in non-hierarchical structure, taking only one file from several ones with the same name~~ and it is not possible to automatically run function on each require'd file.
 
@@ -18,17 +18,25 @@ Inspired by [require-all](https://www.npmjs.com/package/require-all) and [requir
 If you have different needs regarding the functionality, please add a [feature request](https://github.com/alykoshin/require-dir-all/issues).
 
 
-## Installation
+# Installation
 
 ```sh
 npm install --save require-dir-all
 ```
 
 
-## Usage
+# Usage
+
+There are several most common cases to use this module. In all of them some part of the application is splitted into several smaller modules with the same initialization logic and similar functionality. Modules may be grouped into subdirectories. Typical examples are
+- routes (controllers, middlewares) for `express` application, models and datasources;
+- config files;
+- gulp tasks;
+- etc
+
+If your need is to structure one huge config file into several smaller config file, while keeping your code clean, you may go directly to [config files how-to](https://github.com/alykoshin/require-dir-all/wiki/config-howto) with simple example illustration the principles.
 
 
-### Basic usage
+## Basic usage
 
 ```js
 var modules = require('require-dir-all')('directory_to_require');
@@ -61,7 +69,7 @@ modules = [
 ```
 
 
-## Options
+# Options
 
 You may provide additional options using second optional parameter:
 
@@ -88,7 +96,7 @@ Options:
   which means to exclude directories `.git`, `.svn`, `node_modules` while going recursively 
 
 
-## Tips
+# Tips
 
 Typical task is to run the function for each module required from the directory (like init or shutdown routines).
 With this module it is needed to reqursively go through all the properties (i.e.module's exports) 
@@ -97,7 +105,7 @@ and run the function for each of them
 If you need to wait until the end of initialization of all the modules, using `async` 
 (assuming each module's initialize method accepts callback as a parameter).
 
-Please, be aware, that the methods below applicable only 
+Please, be aware, that the examples below iterates only files at top level (as there is no recursion)
 
 Require'd files `modules/module1.js` and  `modules/module2.js`
 
@@ -161,7 +169,8 @@ module.exports.initialize = function() {
 See `demo/initializers` for an example
 
 
-### Simple 
+
+## Simple 
 
 If you need to require all the `.js`, `.json`, `.coffee` files in the directory `modules`, add following line:
 
@@ -190,7 +199,7 @@ modules = {
 By default directories `.git`, `.svn`, `node_modules` are excluded.
 
 
-#### Example 
+### Example 
  
 Assume you have following structure:
 
@@ -240,12 +249,12 @@ node app
 ```
 
 
-### Recursive
+## Recursive
 
 Option `recursive: true` allows to require recursively the directory and all its subdirectories.
 
 
-#### Example
+### Example
 
 You can find this example in `demo/recursive/`
 
@@ -306,7 +315,7 @@ modules: {
 ```
 
 
-### Map
+## Map
 
 Option `map` allows to define function to run for each `require`'d file.
 
@@ -416,14 +425,14 @@ node app
 ```
 
 
-## Run tests:
+# Run tests:
 
 ```
 npm test
 ```
 
 
-## TODO
+# TODO
 
 - Add support for glob-like definitions?
 
@@ -441,15 +450,15 @@ glob.sync( './routes/**/*.js' ).forEach( function( file ) {
 - Restructure README.md to make it more readable (as an example - `browserify`)
 
 
-## Credits
+# Credits
 [Alexander](https://github.com/alykoshin/)
 
 
-## Links to package pages:
+# Links to package pages:
 
 [github.com](https://github.com/alykoshin/require-dir-all) &nbsp; [npmjs.com](https://www.npmjs.com/package/require-dir-all) &nbsp; [travis-ci.org](https://travis-ci.org/alykoshin/require-dir-all) &nbsp; [coveralls.io](https://coveralls.io/github/alykoshin/require-dir-all) &nbsp; [inch-ci.org](https://inch-ci.org/github/alykoshin/require-dir-all)
 
 
-## License
+# License
 
 MIT
