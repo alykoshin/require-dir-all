@@ -27,6 +27,12 @@ npm install --save require-dir-all
 
 # Usage
 
+## Upgrade 0.2.x to 0.3
+
+For the files and directories with the same name behavior is changed from overwrite to merge. That means if you have in the same directory file and subdirectory with any content, this content wll be merged with the content of the file. If the file contains object, then keys of object will be merged. However, if the file returns scalar, for example string, it will completely hide the content of the directory. You may refer to test/07_indexAsParent 
+
+## Use cases
+
 There are several most common cases to use this module. In all of them some part of the application is splitted into several smaller modules with the same initialization logic and similar functionality. Modules may be grouped into subdirectories. Typical examples are
 - Routes (controllers, middlewares) for `express` application, models and datasources;
 - Gulp tasks. If you want to see an examples how to use `require-dir-all` in Gulp files, you may look to `gulp-simple` and `gulp-advanced` in `demo` subdirectory of the module.
@@ -57,7 +63,7 @@ If you need more than one directory to `require`, you can provide array of direc
 var modules = require('require-dir-all')(['dir1', dir2]);
 ```
 
-Variable `modules` will be array of objects with module's exports, equivalent to:
+Resulting variable `modules` will be array of objects with module's exports, equivalent to:
 
 ```js
 modules = [
@@ -67,15 +73,13 @@ modules = [
 ```
 
 
-# Options
-
-You may provide additional options using second optional parameter:
+# Parameters
 
 ```js
 var modules = require('require-dir-all')(
   'directory_to_require', // relative or absolute directory 
   { // options
-    map: function(reqModule) { /* you may postprocess the name of property the module will be stored and exported object */ }
+    map: function(reqModule) { /* you may postprocess the name of property the module will be stored and exported object */ return reqModule; }
     recursive:    false,                          // recursively go through subdirectories; default value shown
     includeFiles: /^.*\.(js|json|coffee)$/,       // RegExp to select files; default value shown
     excludeDirs:   /^(\.git|\.svn|node_modules)$/  // RegExp to ignore subdirectories; default value shown
@@ -83,15 +87,25 @@ var modules = require('require-dir-all')(
 );
 ```
 
+## relOrAbsDir
+
+Relative or absolute directory to start from.
+If array is provided, the result will be array of objects corresponding to each directory.
+
+
+## Options
+
+You may provide additional options using second optional parameter:
+
 Options:    
-- `map`: function to postprocess each `require`'d file (for more details see [map option descripion](#map) below); default: `null`
 - `recursive`  - recursively go through subdirectories; default: ```false```
+- `indexAsParent` - exports of 'index' files will be added directly to object corresponding to directory with this 'index' file, not to its child object named 'index' (as by default); default: ```false```
 - `includeFiles` - reg exp to include files,
   default: `/^.*\.(js|json|coffee)$/`, 
   which means to `require` only `.js`, `.json`, `.coffee` files
 - `excludeDirs` - reg exp to exclude subdirectories (when `recursive: true` ), 
-  default: `/^(\.(git|svn)|(node_modules))$/`, 
-  which means to exclude directories `.git`, `.svn`, `node_modules` while going recursively 
+  default: `/^(\.(git|svn)|(node_modules))$/`,  which means to exclude directories `.git`, `.svn`, `node_modules` while going recursively 
+- `map`: function to postprocess each `require`'d file (for more details see [map option descripion](#map) below); default: `null`
 
 
 # Tips
@@ -164,7 +178,7 @@ module.exports.initialize = function() {
 };
 ```
 
-See `demo/initializers` for an example
+See `demo/06_initializers` for an example
 
 
 
@@ -237,11 +251,11 @@ modules: {
 }
 ```
 
-You can find this example in `demo/simple/`
+You can find this example in `demo/01_simple/`
 To run it: 
 
 ```js
-cd demo/simple/
+cd demo/01_simple/
 npm install
 node app
 ```
@@ -254,28 +268,28 @@ Option `recursive: true` allows to require recursively the directory and all its
 
 ### Example
 
-You can find this example in `demo/recursive/`
+You can find this example in `demo/04_recursive/`
 
 Directory structure:
 
 ```sh
-$ ls -R demo/recursive/modules/
-demo/recursive/modules/:
+$ ls -R demo/04_recursive/modules/
+demo/04_recursive/modules/:
 dir1  dir.a.b.c  excluded  excluded.2  module1.js  module2.js
 
-demo/recursive/modules/dir1:
+demo/04_recursive/modules/dir1:
 dir2  module3.js
 
-demo/recursive/modules/dir1/dir2:
+demo/04_recursive/modules/dir1/dir2:
 module4.js
 
-demo/recursive/modules/dir.a.b.c:
+demo/04_recursive/modules/dir.a.b.c:
 module5.js
 
-demo/recursive/modules/excluded:
+demo/04_recursive/modules/excluded:
 excluded.js
 
-demo/recursive/modules/excluded.2:
+demo/04_recursive/modules/excluded.2:
 excluded.js
 ```
 
@@ -412,21 +426,36 @@ modules: {
 }
 ```
 
-You can find this example in ```demo/map/```
+You can find this example in ```demo/05_map/```
 To run it: 
 
 ```sh
-cd demo/map/
+cd demo/05_map/
 npm install
 node app
 ```
 
 
-# Run tests:
+# Run all demos:
+
+```
+cd demo
+./all_demos.sh
+```
+
+
+# Run tests (and other checks):
 
 ```
 npm test
 ```
+
+## Run tests only:
+
+```
+npm _test
+```
+
 
 
 # TODO

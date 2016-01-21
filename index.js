@@ -7,7 +7,7 @@
 'use strict';
 
 var fs = require('fs'),
-  path = require('path');
+    path = require('path');
 
 var parentModule = module.parent;
 var parentFile = parentModule.filename;
@@ -45,10 +45,15 @@ delete require.cache[__filename];
  * Options for require-dir-all
  *
  * @typedef {object} RequireOptions
- * @property {boolean} recursive    - go recursively into subdirectories
- * @property {RegExp} excludeDirs   - RegExp to exclude directories
- * @property {RegExp} includeFiles  - RegExp to include files
- * @property {RequireMap} map       - map function to be called for each required module
+ * @property {boolean} [recursive=false]     - go recursively into subdirectories
+ * @property {boolean} [indexAsParent=false] - exports of 'index' files will be added
+ *                                     directly to object corresponding to the
+ *                                     directory with this 'index' file, not to
+ *                                     its child object named 'index'
+ *                                     (as by default)
+ * @property {RegExp} [excludeDirs]    - RegExp to exclude directories
+ * @property {RegExp} [includeFiles]   - RegExp to include files
+ * @property {RequireMap} [map]        - map function to be called for each require'd module
  */
 
 /**
@@ -60,8 +65,9 @@ delete require.cache[__filename];
  */
 function isExcludedFile(reqModule, reIncludeFiles) {
   return !! ( (reqModule.filepath === parentFile) ||   // Exclude require'ing file
-    (reIncludeFiles && !reqModule.filename.match(reIncludeFiles)) ); // Exclude files non-matched to pattern includeFiles
+  (reIncludeFiles && !reqModule.filename.match(reIncludeFiles)) ); // Exclude files non-matched to pattern includeFiles
 }
+
 
 /**
  * Check if the directory to be excluded
@@ -73,6 +79,7 @@ function isExcludedFile(reqModule, reIncludeFiles) {
 function isExcludedDir(reqModule, reExcludeDirs) {
   return  !! ( reExcludeDirs && reqModule.filename.match(reExcludeDirs) );
 }
+
 
 /**
  * Main function. Recursively go through directories and require modules according to options
@@ -107,15 +114,56 @@ function _requireDirAll(absDir, options) {
       reqModule.name = reqModule.filename;
 
       // go recursively into subdirectory
+      //if (typeof modules === 'undefined') {
+      //  modules = {};
+      //}
       modules[reqModule.name] = _requireDirAll(reqModule.filepath, options);
 
     } else if ( ! isExcludedFile(reqModule, options.includeFiles)) {
-      reqModule.name = reqModule.base;
+      reqModule.name    = reqModule.base;
       reqModule.exports = require(reqModule.filepath);
       if (options.map) {
         options.map(reqModule);
       }
-      modules[reqModule.name] = reqModule.exports;
+
+      var source = reqModule.exports;
+      var target = (reqModule.name === 'index' && options.indexAsParent) ? modules : modules &&  modules[ reqModule.name ];
+
+      var sourceIsObject = (typeof source === 'object');
+      var targetIsObject = (typeof target === 'object');
+      //var targetUnassigned = (typeof target === 'undefined');
+
+      if (sourceIsObject && targetIsObject) {
+        Object.assign(target, source);
+      } else //if (
+        //(!sourceIsObject && !targetIsObject) || // if source and target both are not objects  or...
+        //(targetUnassigned)   // if target is not yet assigned, we may assign any type to it
+      //)
+      {
+        target = source;
+      //} else {
+      //  console.log('!!!! ' +
+      //    '  source:', source,
+      //    '  target:', target,
+      //    '; sourceIsObject:', sourceIsObject,
+      //    '; targetIsObject:', targetIsObject,
+      //    '; targetUnassigned:', targetUnassigned,
+      //    '');
+      //  throw 'Not possible to mix objects with scalar or array values: ' +
+      //  'filepath: '+ reqModule.filepath + '; ' +
+      //  'modules: '+ JSON.stringify(modules) + '; ' +
+      //  'exports: '+ JSON.stringify(reqModule.exports)
+      //    ;
+      }
+
+      if (reqModule.name === 'index' && options.indexAsParent) {
+        modules = target;
+      } else {
+        //if (typeof modules === 'undefined') {
+        //  modules = {};
+        //}
+        modules[ reqModule.name ] = target;
+      }
     }
 
   }
@@ -123,22 +171,24 @@ function _requireDirAll(absDir, options) {
   return modules;
 }
 
+
 /**
  * Main entry point. Analyse input parameters and invoke main function _requireDirAll()
  *
  * @param { string||string[] } [relOrAbsDir]  - Directory or array of directories to 'require'
- * @param {RequireOptions} [options]                        - Set of options
- * @returns {object || object[]}                        - Returns object with require'd modules or array of such objects
+ * @param {RequireOptions} [options]          - Set of options
+ * @returns {object || object[]}              - Returns object with require'd modules or array of such objects
  * @public
  */
 module.exports = function requireDirAll(relOrAbsDir, options) {
 
   relOrAbsDir = relOrAbsDir || '.';
   options = options || {};
-  options.recursive    = options.recursive    || false;
-  options.includeFiles = options.includeFiles || /^.*\.(js|json|coffee)$/;
-  options.excludeDirs  = options.excludeDirs  || /^(\.git|\.svn|node_modules)$/;
-  options.map          = options.map          || null;
+  options.recursive     = options.recursive     || false;
+  options.indexAsParent = options.indexAsParent || false;
+  options.includeFiles  = options.includeFiles  || /^.*\.(js|json|coffee)$/;
+  options.excludeDirs   = options.excludeDirs   || /^(\.git|\.svn|node_modules)$/;
+  options.map           = options.map           || null;
 
   var absDir;
 

@@ -5,38 +5,42 @@ echo "* Running all the demos..."
 echo
 
 
-echo "* simple"
-node simple/app.js
+echo "* 01_simple"
+node 01_simple/app.js
 echo
 
-echo "* same_dir"
-node same_dir/app.js
+echo "* 02_same_dir"
+node 02_same_dir/app.js
 echo
 
-echo "* recursive"
-node recursive/app.js
+echo "* 03_array_dir"
+node 03_array_dir/app.js
 echo
 
-echo "* map"
-node map/app.js
+echo "* 04_recursive"
+node 04_recursive/app.js
 echo
 
-echo "* initializers"
-node initializers/app.js
+echo "* 05_map"
+node 05_map/app.js
+echo
+
+echo "* 06_initializers"
+node 06_initializers/app.js
 echo
 
 
-echo "* config files"
-node config/app.js
+echo "* 10_config files"
+node 10_config/app.js
 echo
 
 
-echo "* gulp-simple"
-gulp --cwd gulp-simple
+echo "* 20_gulp_simple"
+gulp --cwd 20_gulp_simple
 echo
 
-echo "* gulp-advanced"
-gulp --cwd gulp-advanced
+echo "* 21_gulp_advanced"
+gulp --cwd 21_gulp_advanced
 echo
 
 

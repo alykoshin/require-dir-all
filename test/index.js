@@ -2,17 +2,19 @@
 
 /* globals describe, before, after, it */
 
-var
-  should = require('chai').should(),
-  //should = require('should'),
-  require_dir_all = require('../index');
+var chai = require('chai');
+var should = chai.should();
+var expect = chai.expect;
+  //varshould = require('should'),
+var require_dir_all = require('../index');
+
 
 describe('#simple demo test', function() {
 
   var root, modules, module1, module2;
 
   before('before', function() {
-    root = '../demo/simple/modules/';
+    root = '../demo/01_simple/modules/';
 
     modules = require_dir_all(root);
 
@@ -34,6 +36,7 @@ describe('#simple demo test', function() {
 
 });
 
+
 describe('#same_dir test', function() {
 
   var root, modules, module1, module2;
@@ -41,7 +44,7 @@ describe('#same_dir test', function() {
   before('before', function() {
     // This test can't use files from demos as we need to require 'require-dir-all' from the same dir
     // while not using the package (as done in demo/*)
-    root = './same_dir/';
+    root = './02_same_dir/';
 
     modules = require(root);
 
@@ -70,12 +73,13 @@ describe('#same_dir test', function() {
 
 });
 
-describe('#same_dir test', function() {
+
+describe('#array_dir test', function() {
 
   var root, modules, module1, module2;
 
   before('before', function() {
-    root = './array_dir/';
+    root = './03_array_dir/';
 
     modules = require(root);
 
@@ -104,7 +108,7 @@ describe('#recursive demo test', function() {
   var root, modules, module1, module2, module3, module4, module5;
 
   before('before', function() {
-    root = '../demo/recursive/modules/';
+    root = '../demo/04_recursive/modules/';
 
     modules = require_dir_all(
       root, {
@@ -159,12 +163,13 @@ describe('#recursive demo test', function() {
 
 });
 
+
 describe('#map demo test', function() {
 
-  var root, modules, module1, module2, obj1, obj2;
+  var root, modules, /*module1, module2,*/ obj1, obj2;
 
   before('before', function() {
-    root = '../demo/map/modules/';
+    root = '../demo/05_map/modules/';
 
     var data = {
       module1: 'data for module1',
@@ -180,6 +185,8 @@ describe('#map demo test', function() {
         }
       }
     );
+
+    console.log('modules = ' + JSON.stringify(modules, null, 2));
 
     obj1 = new (require(root+'module1'))(data.module1);
     obj2 = new (require(root+'module2'))(data.module2);
@@ -200,3 +207,82 @@ describe('#map demo test', function() {
 
 });
 
+
+describe('#indexAsParent test', function() {
+
+  var root, modules;
+
+  before('before', function() {
+    root = './07_indexAsParent/input/';
+
+    modules = require_dir_all(
+      root, {
+        recursive: true,
+        indexAsParent: true
+      } );
+
+    console.log('indexAsParent:', JSON.stringify(modules, null, 2));
+
+  });
+
+  it('should have same values as regular require()-s', function() {
+    var index0 = require(root+'index');
+    var index1 = require(root+'dir1/index');
+    var index2 = require(root+'dir2/index');
+    var index3 = require(root+'dir3/index');
+    var index4 = require(root+'dir4/index');
+    var index5 = require(root+'dir5/index');
+    var index51 = require(root+'dir5/dir51/index');
+
+    modules.should.contain(index0);
+    modules.dir1.should.eql(index1);
+    modules.dir2.should.eql(index2);
+    modules.dir3.should.eql(index3);
+    modules.dir4.should.contain(index4);
+    modules.dir4.dir41.should.eql({});
+    modules.dir5.should.contain(index5);
+    modules.dir5.dir51.should.eql(index51);
+  });
+
+  it('should merge dir and file', function() {
+    var index0 = require(root+'merge_dir_file/test/index');
+    var index1 = require(root+'merge_dir_file/test');
+    modules.merge_dir_file.test.should.contain.keys(index0);
+    modules.merge_dir_file.test.prop_test_index.should.be.eql(index0.prop_test_index);
+    modules.merge_dir_file.test.should.contain(index1);
+  });
+
+  it('should index file returning scalar hide all other content', function() {
+    var index0 = require(root+'index_hides_dir/index');
+    modules.index_hides_dir.should.equal(index0);  // subdirectory content is ignored
+  });
+
+  it('should file returning scalar hide content from directory with same name', function() {
+    var dir1 = require(root+'file_hides_dir/dir1.js');
+    modules.file_hides_dir.dir1.should.equal(dir1);  // subdirectory content is ignored
+  });
+
+
+});
+
+
+/*
+describe('#indexAsParent throw test', function() {
+
+  var root, modules, index0, index1, index2;
+
+  it('should throw for invalid1/ directory (merging scalar with object)', function() {
+    root = './indexAsParent/invalid1/';
+
+    expect(function() {
+      require_dir_all(
+        root, {
+          recursive:     true,
+          indexAsParent: true
+        });
+    }).to.throw(/Not possible/);
+
+  });
+
+});
+*/

@@ -1,0 +1,4 @@
+{
+  "prop_test": "string exported from merge_dir_file/test.json",
+  "prop": "string exported from merge_dir_file/test.json"
+}

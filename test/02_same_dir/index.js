@@ -8,4 +8,4 @@ var modules = require('../../index')();
 module.exports = modules;
 
 
-console.log('modules = ' + JSON.stringify(module.exports, null, 2));
+//console.log('modules = ' + JSON.stringify(module.exports, null, 2));
