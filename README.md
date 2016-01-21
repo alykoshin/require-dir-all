@@ -29,7 +29,9 @@ npm install --save require-dir-all
 
 ## Upgrade 0.2.x to 0.3
 
-For the files and directories with the same name behavior is changed from overwrite to merge. That means if you have in the same directory file and subdirectory with any content, this content wll be merged with the content of the file. If the file contains object, then keys of object will be merged. However, if the file returns scalar, for example string, it will completely hide the content of the directory. You may refer to test/07_indexAsParent 
+For the files and directories with the same name behavior is changed from overwrite to merge. That means if you have in the same directory file and subdirectory with any content, this content wll be merged with the content of the file. If the file contains object, then keys of object will be merged. 
+However, if the file returns non-object, for example string, it will completely hide the content of the directory with same name.
+If you set `indexAsParent: true`, index file returning non-object will hide all subdirectories.
 
 ## Use cases
 
@@ -79,11 +81,12 @@ modules = [
 var modules = require('require-dir-all')(
   'directory_to_require', // relative or absolute directory 
   { // options
-    map: function(reqModule) { /* you may postprocess the name of property the module will be stored and exported object */ return reqModule; }
-    recursive:    false,                          // recursively go through subdirectories; default value shown
-    includeFiles: /^.*\.(js|json|coffee)$/,       // RegExp to select files; default value shown
+    recursive:     false,                          // recursively go through subdirectories; default value shown
+    indexAsParent: false,                          // add content of index.js/index.json files to parent object, not to parent.index
+    includeFiles:  /^.*\.(js|json|coffee)$/,       // RegExp to select files; default value shown
     excludeDirs:   /^(\.git|\.svn|node_modules)$/  // RegExp to ignore subdirectories; default value shown
-  }
+    map: function(reqModule) { /* you may postprocess the name of property the module will be stored and exported object */ return reqModule; }
+   }
 );
 ```
 
