@@ -244,6 +244,14 @@ describe('#indexAsParent test', function() {
     modules.dir5.dir51.should.eql(index51);
   });
 
+  it('should merge .js and .json', function() {
+    var js = require(root+'merge_js_json/index.js');
+    var json = require(root+'merge_js_json/index.json');
+    modules.merge_js_json.should.contain.keys(js);
+    modules.merge_js_json.prop_js.should.be.eql(js.prop_js);
+    modules.merge_js_json.should.contain(json);
+  });
+
   it('should merge dir and file', function() {
     var index0 = require(root+'merge_dir_file/test/index');
     var index1 = require(root+'merge_dir_file/test');
