@@ -13,7 +13,7 @@ var parentModule = module.parent;
 var parentFile = parentModule.filename;
 var parentDir = path.dirname(parentFile);
 
-// Replacement for Object.assign() for node 0.9-0.12
+// Replacement for Object.assign() for node 0.10-0.12
 var object_assign = require('./lib/assign');
 
 // Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js

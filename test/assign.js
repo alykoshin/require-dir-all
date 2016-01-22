@@ -27,6 +27,7 @@ describe('#object_assign()', function() {
       }
     };
     var obj3 = {}
+
     object_assign(obj3, obj1);
     expect(obj3).eql(obj1);
 
