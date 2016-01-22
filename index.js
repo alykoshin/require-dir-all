@@ -20,6 +20,30 @@ var parentDir = path.dirname(parentFile);
 // require(), so important: we clear the require() cache each time!
 delete require.cache[__filename];
 //
+
+// Node 0.10-0.12 does not supports Object.assign()
+// Source below is based upon
+// https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
+
+var object_assign = function (target) {
+  if (target === undefined || target === null) {
+    throw new TypeError('Cannot convert undefined or null to object');
+  }
+
+  var output = Object(target);
+  for (var index = 1; index < arguments.length; index++) {
+    var source = arguments[index];
+    if (source !== undefined && source !== null) {
+      for (var nextKey in source) {
+        if (source.hasOwnProperty(nextKey)) {
+          output[nextKey] = source[nextKey];
+        }
+      }
+    }
+  }
+  return output;
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -134,26 +158,30 @@ function _requireDirAll(absDir, options) {
       //var targetUnassigned = (typeof target === 'undefined');
 
       if (sourceIsObject && targetIsObject) {
-        Object.assign(target, source);
+        if (Object.assign) {
+          Object.assign(target, source);
+        } else {
+          object_assign(target, source);
+        }
       } else //if (
-        //(!sourceIsObject && !targetIsObject) || // if source and target both are not objects  or...
-        //(targetUnassigned)   // if target is not yet assigned, we may assign any type to it
+      //(!sourceIsObject && !targetIsObject) || // if source and target both are not objects  or...
+      //(targetUnassigned)   // if target is not yet assigned, we may assign any type to it
       //)
       {
         target = source;
-      //} else {
-      //  console.log('!!!! ' +
-      //    '  source:', source,
-      //    '  target:', target,
-      //    '; sourceIsObject:', sourceIsObject,
-      //    '; targetIsObject:', targetIsObject,
-      //    '; targetUnassigned:', targetUnassigned,
-      //    '');
-      //  throw 'Not possible to mix objects with scalar or array values: ' +
-      //  'filepath: '+ reqModule.filepath + '; ' +
-      //  'modules: '+ JSON.stringify(modules) + '; ' +
-      //  'exports: '+ JSON.stringify(reqModule.exports)
-      //    ;
+        //} else {
+        //  console.log('!!!! ' +
+        //    '  source:', source,
+        //    '  target:', target,
+        //    '; sourceIsObject:', sourceIsObject,
+        //    '; targetIsObject:', targetIsObject,
+        //    '; targetUnassigned:', targetUnassigned,
+        //    '');
+        //  throw 'Not possible to mix objects with scalar or array values: ' +
+        //  'filepath: '+ reqModule.filepath + '; ' +
+        //  'modules: '+ JSON.stringify(modules) + '; ' +
+        //  'exports: '+ JSON.stringify(reqModule.exports)
+        //    ;
       }
 
       if (reqModule.name === 'index' && options.indexAsParent) {
