@@ -9,10 +9,6 @@
 var fs = require('fs'),
     path = require('path');
 
-var parentModule = module.parent;
-var parentFile = parentModule.filename;
-var parentDir = path.dirname(parentFile);
-
 // Replacement for Object.assign() for node 0.10-0.12
 var object_assign = require('./lib/assign');
 
@@ -23,6 +19,10 @@ var object_assign = require('./lib/assign');
 // require(), so important: we clear the require() cache each time!
 delete require.cache[__filename];
 //
+
+var parentModule = module.parent;
+var parentFile   = parentModule.filename;
+var parentDir    = path.dirname(parentFile);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -3,7 +3,7 @@
   "version": "0.3.5",
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "./index.js",
-  "engines" : { "node" : ">=0.10" },
+  "engines": { "node" : ">=0.10" },
   "scripts": {
     "nsp": "nsp check",
     "_deps-check": "npm-check-updates --error-level 2",
