@@ -5,8 +5,11 @@ node_js:
   - "0.12"
   - "4.0"
   - "4.2"
+  - "4.3"
   - "5.0"
   - "5.1"
+  - "5.2"
+  - "5.3"
 script: "npm run-script test-travis"
 # Send coverage data to Coveralls
 after_script: "npm run-script coverall"

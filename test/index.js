@@ -213,7 +213,7 @@ describe('#indexAsParent test', function() {
   var root, modules;
 
   before('before', function() {
-    root = './07_indexAsParent/input/';
+    root = './07_indexAsParent/';
 
     modules = require_dir_all(
       root, {
@@ -244,53 +244,58 @@ describe('#indexAsParent test', function() {
     modules.dir5.dir51.should.eql(index51);
   });
 
+});
+
+
+describe('#merge test', function() {
+
+  var root, modules;
+
+  before('before', function() {
+    root = './08_merge/';
+
+    modules = require_dir_all(
+      root, {
+        recursive: true,
+        indexAsParent: true
+      } );
+
+    console.log('merge:', JSON.stringify(modules, null, 2));
+
+  });
+
   it('should merge .js and .json', function() {
-    var js = require(root+'merge_js_json/index.js');
-    var json = require(root+'merge_js_json/index.json');
-    modules.merge_js_json.should.contain.keys(js);
-    modules.merge_js_json.prop_js.should.be.eql(js.prop_js);
-    modules.merge_js_json.should.contain(json);
+    var js   = require(root+'01_merge_js_json/index.js');
+    var json = require(root+'01_merge_js_json/index.json');
+    modules['01_merge_js_json'].should.contain.keys(js);
+    modules['01_merge_js_json'].prop_js.should.be.eql(js.prop_js);
+    modules['01_merge_js_json'].should.contain(json);
   });
 
   it('should merge dir and file', function() {
-    var index0 = require(root+'merge_dir_file/test/index');
-    var index1 = require(root+'merge_dir_file/test');
-    modules.merge_dir_file.test.should.contain.keys(index0);
-    modules.merge_dir_file.test.prop_test_index.should.be.eql(index0.prop_test_index);
-    modules.merge_dir_file.test.should.contain(index1);
+    var index0 = require(root+'02_merge_dir_file/test/index');
+    var index1 = require(root+'02_merge_dir_file/test');
+    modules['02_merge_dir_file'].test.should.contain.keys(index0);
+    modules['02_merge_dir_file'].test.prop_test_index.should.be.eql(index0.prop_test_index);
+    modules['02_merge_dir_file'].test.should.contain(index1);
   });
 
   it('should index file returning scalar hide all other content', function() {
-    var index0 = require(root+'index_hides_dir/index');
-    modules.index_hides_dir.should.equal(index0);  // subdirectory content is ignored
+    var index0 = require(root+'03_index_hides_dir/index');
+    modules['03_index_hides_dir'].should.equal(index0);  // subdirectory content is ignored
   });
 
   it('should file returning scalar hide content from directory with same name', function() {
-    var dir1 = require(root+'file_hides_dir/dir1.js');
-    modules.file_hides_dir.dir1.should.equal(dir1);  // subdirectory content is ignored
+    var dir1 = require(root+'04_file_hides_dir/dir1.js');
+    modules['04_file_hides_dir'].dir1.should.equal(dir1);  // subdirectory content is ignored
+  });
+
+  it('should json hide js returning scalar with same name', function() {
+    //var index0 = require(root+'05_json_hides_js/index.js');   // returns scalar (string)
+    var index1 = require(root+'05_json_hides_js/index.json'); // returns object which overwrites index0
+    modules['05_json_hides_js'].should.equal(index1);  // js content is ignored
   });
 
 
-});
-
-
-/*
-describe('#indexAsParent throw test', function() {
-
-  var root, modules, index0, index1, index2;
-
-  it('should throw for invalid1/ directory (merging scalar with object)', function() {
-    root = './indexAsParent/invalid1/';
-
-    expect(function() {
-      require_dir_all(
-        root, {
-          recursive:     true,
-          indexAsParent: true
-        });
-    }).to.throw(/Not possible/);
-
-  });
 
 });
-*/
