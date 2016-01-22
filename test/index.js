@@ -5,8 +5,15 @@
 var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
-  //varshould = require('should'),
+
 var require_dir_all = require('../index');
+
+
+console.log(
+  '* process.version: ' + process.version + '\n' +
+  '* __dirname: '+ __dirname + '\n' +
+  '* process.cwd(): ' + process.cwd()
+);
 
 
 describe('#simple demo test', function() {
@@ -44,7 +51,7 @@ describe('#same_dir test', function() {
   before('before', function() {
     // This test can't use files from demos as we need to require 'require-dir-all' from the same dir
     // while not using the package (as done in demo/*)
-    root = './02_same_dir/';
+    root = '../test_data/02_same_dir/';
 
     modules = require(root);
 
@@ -79,7 +86,7 @@ describe('#array_dir test', function() {
   var root, modules, module1, module2;
 
   before('before', function() {
-    root = './03_array_dir/';
+    root = '../test_data/03_array_dir/';
 
     modules = require(root);
 
@@ -213,7 +220,7 @@ describe('#indexAsParent test', function() {
   var root, modules;
 
   before('before', function() {
-    root = './07_indexAsParent/';
+    root = '../test_data/07_indexAsParent/';
 
     modules = require_dir_all(
       root, {
@@ -252,7 +259,7 @@ describe('#merge test', function() {
   var root, modules;
 
   before('before', function() {
-    root = './08_merge/';
+    root = '../test_data/08_merge/';
 
     modules = require_dir_all(
       root, {
@@ -298,3 +305,4 @@ describe('#merge test', function() {
 
 
 });
+

@@ -1,6 +1,6 @@
 'use strict';
 
-console.log('same_dir');
+//console.log('same_dir');
 
 
 var modules = require('../../index')();

@@ -1,6 +1,6 @@
 'use strict';
 
-console.log('array_dir');
+//console.log('array_dir');
 
 
 var dirs = ['dir1', 'dir2'];
