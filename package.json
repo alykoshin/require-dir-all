@@ -12,7 +12,7 @@
 
     "_deps-update":   "echo '* Updating packages versions... '; npm-check-updates -u --upgradeAll --error-level 1 && npm install",
     "_check-changes": "echo '* Checking if git directory is clean... '; bash -c '[[ -z $(git status -uno --porcelain) ]]'",
-    "update-deps": "npm run _check-changes && npm run _deps-update && npm tesst && git commit -am 'updated deps'",
+    "update-deps": "npm run _check-changes && npm run _deps-update && npm test && git commit -am 'updated deps'",
 
     "lint": "eslint -f unix .",
     "inspect": "jsinspect",
