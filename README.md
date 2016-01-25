@@ -62,7 +62,7 @@ modules = {
 If you need more than one directory to `require`, you can provide array of directories:
 
 ```js
-var modules = require('require-dir-all')(['dir1', dir2]);
+var modules = require('require-dir-all')(['dir1', 'dir2']);
 ```
 
 Resulting variable `modules` will be array of objects with module's exports, equivalent to:
