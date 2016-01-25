@@ -38,8 +38,8 @@ If you set `indexAsParent: true`, index file returning non-object will hide all 
 There are several most common cases to use this module. In all of them some part of the application is splitted into several smaller modules with the same initialization logic and similar functionality. Modules may be grouped into subdirectories. Typical examples are
 - Routes (controllers, middlewares) for `express` application, models and datasources;
 - Gulp tasks. If you want to see an examples how to use `require-dir-all` in Gulp files, you may look to `gulp-simple` and `gulp-advanced` in `demo` subdirectory of the module.
-- Config files. If your need is to structure one huge config file into several smaller config file, while keeping your code clean, you may go directly to separated article [config files how-to](https://github.com/alykoshin/require-dir-all/wiki/Config-files-how-to) illustrating the principles.
-etc
+- Config files. If your need is to structure one huge config file into several smaller config files, while keeping your code clean, you may go directly to separate article [config files how-to](https://github.com/alykoshin/require-dir-all/wiki/Config-files-how-to) illustrating the idea.
+- etc
 
 
 ## Basic usage

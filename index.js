@@ -1,24 +1,23 @@
 // See README.md for details.
 
-// Inspired by require-all and require-dir packages:
-// https://github.com/felixge/node-require-all
-// https://github.com/aseemk/requireDir
-
 'use strict';
 
-var fs = require('fs'),
-    path = require('path');
+var fs = require('fs');
+var path = require('path');
 
 // Replacement for Object.assign() for node 0.10-0.12
 var object_assign = require('./lib/assign');
 
+////////////////////////////////////////////////////////////////////////////////
 // Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js
 //
 // make a note of the calling file's path, so that we can resolve relative
 // paths. this only works if a fresh version of this module is run on every
 // require(), so important: we clear the require() cache each time!
+//
 delete require.cache[__filename];
 //
+////////////////////////////////////////////////////////////////////////////////
 
 var parentModule = module.parent;
 var parentFile   = parentModule.filename;
