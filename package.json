@@ -52,7 +52,9 @@
     "url": "https://github.com/alykoshin/require-dir-all/issues"
   },
   "homepage": "https://github.com/alykoshin/require-dir-all#readme",
-  "dependencies": {},
+  "dependencies": {
+    "mini-assign": "0.1.1"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.6",

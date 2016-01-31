@@ -109,6 +109,7 @@ Options:
   which means to `require` only `.js`, `.json`, `.coffee` files
 - `excludeDirs` - reg exp to exclude subdirectories (when `recursive: true` ); optional; 
   default: `/^(\.(git|svn)|(node_modules))$/`,  which means to exclude directories `.git`, `.svn`, `node_modules` while going recursively 
+- `_parentsToSkip`: number of parent modules to skip in order to find calling module; optional; default: 0 (i.e.consider parent as calling)
 - `map`: function to postprocess each `require`'d file (for more details see [map option descripion](#map) below); optional; default: `null`
 
 

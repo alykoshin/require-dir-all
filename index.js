@@ -6,22 +6,49 @@ var fs = require('fs');
 var path = require('path');
 
 // Replacement for Object.assign() for node 0.10-0.12
-var object_assign = require('./lib/assign');
+var object_assign = require('mini-assign');
 
-////////////////////////////////////////////////////////////////////////////////
-// Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js //
-//                                                                            //
-// make a note of the calling file's path, so that we can resolve relative    //
-// paths. this only works if a fresh version of this module is run on every   //
-// require(), so important: we clear the require() cache each time!           //
-//                                                                            //
-delete require.cache[__filename];
-//                                                                            //
-////////////////////////////////////////////////////////////////////////////////
+var parentFile;
+var parentDir;
 
-var parentModule = module.parent;
-var parentFile   = parentModule.filename;
-var parentDir    = path.dirname(parentFile);
+function getCallingModule(_parentsToSkip) {
+  _parentsToSkip = _parentsToSkip || 0;
+
+  var callingModule = module;
+  for (var i=0; i <= _parentsToSkip; i++) {
+    ////////////////////////////////////////////////////////////////////////////////
+    // Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js //
+    //                                                                            //
+    // make a note of the calling file's path, so that we can resolve relative    //
+    // paths. this only works if a fresh version of this module is run on every   //
+    // require(), so important: we clear the require() cache each time!           //
+    //                                                                            //
+    delete require.cache[ callingModule.filename ];
+    //                                                                            //
+    ////////////////////////////////////////////////////////////////////////////////
+    callingModule = callingModule.parent;
+  }
+
+  parentFile   = callingModule.filename;
+  parentDir    = path.dirname(parentFile);
+
+
+  //////////////////////////////////////////////////////////////////////////////////
+  //// Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js //
+  ////                                                                            //
+  //// make a note of the calling file's path, so that we can resolve relative    //
+  //// paths. this only works if a fresh version of this module is run on every   //
+  //// require(), so important: we clear the require() cache each time!           //
+  ////                                                                            //
+  //delete require.cache[ __filename ];
+  ////                                                                            //
+  //////////////////////////////////////////////////////////////////////////////////
+  //
+  //var parentModule = module.parent;
+  //var parentFile   = parentModule.filename;
+  //var parentDir    = path.dirname(parentFile);
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,6 +84,7 @@ var parentDir    = path.dirname(parentFile);
  * @property {boolean} [throwNoDir=true] - throw exception if require'ing directory does not exists (default: true)
  * @property {RegExp} [excludeDirs]    - RegExp to exclude directories
  * @property {RegExp} [includeFiles]   - RegExp to include files
+ * @property {number} [_parentsToSkip]  - number of parent modules to skip in order to find calling module; optional; default: 0 (consider parent as calling)
  * @property {RequireMap} [map]        - map function to be called for each require'd module
  */
 
@@ -203,10 +231,13 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
   options.indexAsParent = options.indexAsParent || false;
   options.includeFiles  = options.includeFiles  || /^.*\.(js|json|coffee)$/;
   options.excludeDirs   = options.excludeDirs   || /^(\.git|\.svn|node_modules)$/;
+  options._parentsToSkip = options._parentsToSkip || 0;
   options.map           = options.map           || null;
   if (typeof options.throwNoDir === 'undefined') options.throwNoDir = true;
 
   var absDir;
+
+  getCallingModule(options._parentsToSkip);
 
   if (typeof relOrAbsDir === 'string') {
     absDir = path.resolve(parentDir, relOrAbsDir);
