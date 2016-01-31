@@ -6,7 +6,8 @@ var fs = require('fs');
 var path = require('path');
 
 // Replacement for Object.assign() for node 0.10-0.12
-var object_assign = require('mini-assign');
+//var assign = require('mini-assign');
+var deepAssign = require('mini-deep-assign');
 
 var parentFile;
 var parentDir;
@@ -173,11 +174,11 @@ function _requireDirAll(absDir, options) {
       //var targetUnassigned = (typeof target === 'undefined');
 
       if (sourceIsObject && targetIsObject) {
-        if (Object.assign) {
-          Object.assign(target, source);
-        } else {
-          object_assign(target, source);
-        }
+        //if (Object.assign) {
+        //  Object.assign(target, source);
+        //} else {
+          deepAssign(target, source);
+        //}
       } else //if (
       //(!sourceIsObject && !targetIsObject) || // if source and target both are not objects  or...
       //(targetUnassigned)   // if target is not yet assigned, we may assign any type to it
