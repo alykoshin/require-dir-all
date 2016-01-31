@@ -53,7 +53,7 @@
   },
   "homepage": "https://github.com/alykoshin/require-dir-all#readme",
   "dependencies": {
-    "mini-deep-assign": "0.0.1"
+    "mini-deep-assign": "0.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
