@@ -101,14 +101,15 @@ If array is provided, the result will be array of objects corresponding to each 
 You may provide additional options using second optional parameter:
 
 Options:    
-- `recursive`  - recursively go through subdirectories; default: ```false```
-- `indexAsParent` - exports of 'index' files will be added directly to object corresponding to directory with this 'index' file, not to its child object named 'index' (as by default); default: ```false```
-- `includeFiles` - reg exp to include files,
+- `recursive`  - recursively go through subdirectories; optional; default: `false`
+- `indexAsParent` - exports of 'index' files will be added directly to object corresponding to directory with this 'index' file, not to its child object named 'index' (as by default); optional; default: `false`
+- `throwNoDir` - throw exception if require'ing directory does not exists; optional; default: `true`
+- `includeFiles` - reg exp to include files; optional;
   default: `/^.*\.(js|json|coffee)$/`, 
   which means to `require` only `.js`, `.json`, `.coffee` files
-- `excludeDirs` - reg exp to exclude subdirectories (when `recursive: true` ), 
+- `excludeDirs` - reg exp to exclude subdirectories (when `recursive: true` ); optional; 
   default: `/^(\.(git|svn)|(node_modules))$/`,  which means to exclude directories `.git`, `.svn`, `node_modules` while going recursively 
-- `map`: function to postprocess each `require`'d file (for more details see [map option descripion](#map) below); default: `null`
+- `map`: function to postprocess each `require`'d file (for more details see [map option descripion](#map) below); optional; default: `null`
 
 
 # Tips

@@ -254,6 +254,38 @@ describe('#indexAsParent test', function() {
 });
 
 
+describe('#throwNoDir test', function() {
+
+  var root = 'no-such-directory-exists';
+  var modules;
+
+
+  it('should throw if throwNoDir is default or true', function() {
+
+    expect(function() {
+      modules = require_dir_all(root, {} );
+    }).throw();
+
+    expect(function() {
+      modules = require_dir_all(root, { throwNoDir: true } );
+    }).throw();
+
+  });
+
+
+  it('should not throw if throwNoDir is false and return empty object', function() {
+
+    expect(function() {
+      modules = require_dir_all(root, { throwNoDir: false } );
+    }).not.throw();
+
+    expect(modules).deep.equal({});
+  });
+
+
+});
+
+
 describe('#merge test', function() {
 
   var root, modules;

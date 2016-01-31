@@ -54,6 +54,7 @@ var parentDir    = path.dirname(parentFile);
  *                                     directory with this 'index' file, not to
  *                                     its child object named 'index'
  *                                     (as by default)
+ * @property {boolean} [throwNoDir=true] - throw exception if require'ing directory does not exists (default: true)
  * @property {RegExp} [excludeDirs]    - RegExp to exclude directories
  * @property {RegExp} [includeFiles]   - RegExp to include files
  * @property {RequireMap} [map]        - map function to be called for each require'd module
@@ -95,7 +96,14 @@ function isExcludedDir(reqModule, reExcludeDirs) {
 function _requireDirAll(absDir, options) {
   var modules = {};
 
-  var files = fs.readdirSync(absDir);
+  var files = [];
+  try {
+    files = fs.readdirSync(absDir);
+  } catch (e) {
+    if (options.throwNoDir) {
+      throw e;
+    }
+  }
 
   for (var length=files.length, i=0; i<length; ++i) {
 
@@ -196,6 +204,7 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
   options.includeFiles  = options.includeFiles  || /^.*\.(js|json|coffee)$/;
   options.excludeDirs   = options.excludeDirs   || /^(\.git|\.svn|node_modules)$/;
   options.map           = options.map           || null;
+  if (typeof options.throwNoDir === 'undefined') options.throwNoDir = true;
 
   var absDir;
 
