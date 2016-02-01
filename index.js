@@ -9,46 +9,48 @@ var path = require('path');
 //var assign = require('mini-assign');
 var deepAssign = require('mini-deep-assign');
 
-var parentFile;
-var parentDir;
+//var parentFile;
+//var parentDir;
 
-function getCallingModule(_parentsToSkip) {
-  _parentsToSkip = _parentsToSkip || 0;
+var moduleParent = require('module-parent');
 
-  var callingModule = module;
-  for (var i=0; i <= _parentsToSkip; i++) {
-    ////////////////////////////////////////////////////////////////////////////////
-    // Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js //
-    //                                                                            //
-    // make a note of the calling file's path, so that we can resolve relative    //
-    // paths. this only works if a fresh version of this module is run on every   //
-    // require(), so important: we clear the require() cache each time!           //
-    //                                                                            //
-    delete require.cache[ callingModule.filename ];
-    //                                                                            //
-    ////////////////////////////////////////////////////////////////////////////////
-    callingModule = callingModule.parent;
-  }
-
-  parentFile   = callingModule.filename;
-  parentDir    = path.dirname(parentFile);
-
-
-  //////////////////////////////////////////////////////////////////////////////////
-  //// Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js //
-  ////                                                                            //
-  //// make a note of the calling file's path, so that we can resolve relative    //
-  //// paths. this only works if a fresh version of this module is run on every   //
-  //// require(), so important: we clear the require() cache each time!           //
-  ////                                                                            //
-  //delete require.cache[ __filename ];
-  ////                                                                            //
-  //////////////////////////////////////////////////////////////////////////////////
-  //
-  //var parentModule = module.parent;
-  //var parentFile   = parentModule.filename;
-  //var parentDir    = path.dirname(parentFile);
-}
+//var getCallingModule(_parentsToSkip) {
+//  _parentsToSkip = _parentsToSkip || 0;
+//
+//  var callingModule = module;
+//  for (var i=0; i <= _parentsToSkip; i++) {
+//    ////////////////////////////////////////////////////////////////////////////////
+//    // Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js //
+//    //                                                                            //
+//    // make a note of the calling file's path, so that we can resolve relative    //
+//    // paths. this only works if a fresh version of this module is run on every   //
+//    // require(), so important: we clear the require() cache each time!           //
+//    //                                                                            //
+//    delete require.cache[ callingModule.filename ];
+//    //                                                                            //
+//    ////////////////////////////////////////////////////////////////////////////////
+//    callingModule = callingModule.parent;
+//  }
+//
+//  parentFile   = callingModule.filename;
+//  parentDir    = path.dirname(parentFile);
+//
+//
+//  //////////////////////////////////////////////////////////////////////////////////
+//  //// Trick taken from https://github.com/aseemk/requireDir/blob/master/index.js //
+//  ////                                                                            //
+//  //// make a note of the calling file's path, so that we can resolve relative    //
+//  //// paths. this only works if a fresh version of this module is run on every   //
+//  //// require(), so important: we clear the require() cache each time!           //
+//  ////                                                                            //
+//  //delete require.cache[ __filename ];
+//  ////                                                                            //
+//  //////////////////////////////////////////////////////////////////////////////////
+//  //
+//  //var parentModule = module.parent;
+//  //var parentFile   = parentModule.filename;
+//  //var parentDir    = path.dirname(parentFile);
+//}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,15 +92,26 @@ function getCallingModule(_parentsToSkip) {
  */
 
 /**
- * Check if the module to be excluded
+ * Check if the module to be excluded according to RE
  *
  * @param {RequireModule} reqModule
  * @param {RegExp} reIncludeFiles
  * @returns {boolean}
  */
-function isExcludedFile(reqModule, reIncludeFiles) {
-  return !! ( (reqModule.filepath === parentFile) ||   // Exclude require'ing file
-  (reIncludeFiles && !reqModule.filename.match(reIncludeFiles)) ); // Exclude files non-matched to pattern includeFiles
+function isExcludedFileRe(reqModule, reIncludeFiles) {
+  return  !!reIncludeFiles && !reqModule.filename.match(reIncludeFiles); // Exclude files non-matched to pattern includeFiles
+}
+
+
+/**
+ * Check if the module to be excluded because it is the same as require'ing file
+ *
+ * @param {RequireModule} reqModule
+ * @param {object} originalModule
+ * @returns {boolean}
+ */
+function isExcludedFileParent(reqModule, originalModule) {
+  return reqModule.filepath === originalModule.filename;   // Exclude require'ing file
 }
 
 
@@ -117,12 +130,13 @@ function isExcludedDir(reqModule, reExcludeDirs) {
 /**
  * Main function. Recursively go through directories and require modules according to options
  *
+ * @param   {object}  originalModule
  * @param   {string}  absDir
  * @param   {RequireOptions} options
  * @returns {object}
  * @private
  */
-function _requireDirAll(absDir, options) {
+function _requireDirAll(originalModule, absDir, options) {
   var modules = {};
 
   var files = [];
@@ -157,9 +171,9 @@ function _requireDirAll(absDir, options) {
       //if (typeof modules === 'undefined') {
       //  modules = {};
       //}
-      modules[reqModule.name] = _requireDirAll(reqModule.filepath, options);
+      modules[reqModule.name] = _requireDirAll(originalModule, reqModule.filepath, options);
 
-    } else if ( ! isExcludedFile(reqModule, options.includeFiles)) {
+    } else if ( ! isExcludedFileRe(reqModule, options.includeFiles) && !isExcludedFileParent(reqModule, originalModule)) {
       reqModule.name    = reqModule.base;
       reqModule.exports = require(reqModule.filepath);
       if (options.map) {
@@ -238,19 +252,22 @@ module.exports = function requireDirAll(relOrAbsDir, options) {
 
   var absDir;
 
-  getCallingModule(options._parentsToSkip);
+  var originalModule = moduleParent(module, options._parentsToSkip);
+  //var parentFile   = originalModule.filename;
+  //var parentDir    = path.dirname(parentFile);
+  var parentDir    = path.dirname(originalModule.filename);
 
   if (typeof relOrAbsDir === 'string') {
     absDir = path.resolve(parentDir, relOrAbsDir);
     //console.log('relOrAbsDir:', relOrAbsDir, '; options:', options);
-    return _requireDirAll(absDir, options);
+    return _requireDirAll(originalModule, absDir, options);
 
   } else { // Assume it is array
     var modulesArray = [];
     for (var length=relOrAbsDir.length, i=0; i<length; ++i) {
       //console.log('relOrAbsDir:', relOrAbsDir, '; options:', options);
       absDir = path.resolve(parentDir, relOrAbsDir[i]);
-      modulesArray.push(_requireDirAll(absDir, options));
+      modulesArray.push(_requireDirAll(originalModule, absDir, options));
     }
     return modulesArray;
   }
