@@ -53,7 +53,7 @@
   },
   "homepage": "https://github.com/alykoshin/require-dir-all#readme",
   "dependencies": {
-    "mini-deep-assign": "0.0.2",
+    "mini-deep-assign": "0.0.3",
     "module-parent": "0.0.2"
   },
   "devDependencies": {
@@ -62,7 +62,7 @@
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "mockery": "^1.4.1",
-    "npm-check-updates": "^2.5.8",
+    "npm-check-updates": "^2.6.1",
     "nsp": "^2.2.1"
   }
 }
