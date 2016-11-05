@@ -337,11 +337,13 @@ modules: {
 Option `map` allows to define function to run for each `require`'d file.
 
 Object properties.
+
 These properties may be changed:
 - `name` - module name to be stored in result object 
 - `exports` - module's exports value 
+
 These properties are read-only:
-- `path` - filepath,
+- `filepath` - full filename with absolute path,
 - `base` - base part of file name,
 - `ext` - file extension
 
