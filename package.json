@@ -13,7 +13,7 @@
     "_check-changes": "echo '* Checking if git directory is clean... '; bash -c '[[ -z $(git status -uno --porcelain) ]]'",
     "update-deps": "npm run _check-changes && npm run _deps-update && npm test && git commit -am 'updated deps'",
     "lint": "eslint -f unix .",
-    "inspect": "jsinspect",
+    "inspect": "jsinspect --ignore 'coverage|test'",
     "pretest": "npm run lint && npm run inspect && npm run nsp && npm run _deps-check",
     "_test": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*",
     "test": "npm run _test",
@@ -53,16 +53,16 @@
   },
   "homepage": "https://github.com/alykoshin/require-dir-all#readme",
   "dependencies": {
-    "mini-deep-assign": "0.0.6",
+    "mini-deep-assign": "0.0.8",
     "module-parent": "0.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "coveralls": "^2.11.16",
+    "coveralls": "^2.13.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "mockery": "^2.0.0",
-    "npm-check-updates": "^2.10.3",
-    "nsp": "^2.6.2"
+    "npm-check-updates": "^2.11.0",
+    "nsp": "^2.6.3"
   }
 }
