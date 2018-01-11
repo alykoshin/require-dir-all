@@ -7,6 +7,8 @@
 [![Dependency Status](https://david-dm.org/alykoshin/require-dir-all/status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=dependencies)
 [![devDependency Status](https://david-dm.org/alykoshin/require-dir-all/dev-status.svg)](https://david-dm.org/alykoshin/require-dir-all#info=devDependencies)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/alykoshin/require-dir-all/badge.svg)](https://snyk.io/test/github/alykoshin/require-dir-all)
+
 
 # require-dir-all
 
