@@ -4,7 +4,7 @@
   "description": "Yet another Node.js helper to require all files in directory",
   "main": "./index.js",
   "engines": {
-    "node": ">=0.10"
+    "node": ">=4"
   },
   "scripts": {
     "nsp": "nsp check",
