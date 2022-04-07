@@ -9,7 +9,7 @@
   "author": "alykoshin <alykoshin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "async": "^1.4.0",
+    "async": "^3.2.2",
     "lodash": "^3.10.0",
     "path": "^0.11.14",
     "require-dir-all": "latest"
